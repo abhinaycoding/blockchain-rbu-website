@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  overflow-x: hidden; /* STOPS THE PAGE FROM SHAKING LEFT/RIGHT */
+  width: 100%;
+  position: relative;
+}
+body {
+  @apply bg-dark text-white font-sans overflow-x-hidden;
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+/* Futuristic Card */
+.cyber-card {
+  @apply bg-black/40 backdrop-blur-md border border-white/10 relative overflow-hidden transition-all duration-300;
+}
+.cyber-card:hover {
+  @apply border-neon-cyan/50 shadow-[0_0_20px_rgba(0,243,255,0.2)];
+}
+
+/* Neon Text */
+.text-neon {
+  @apply text-transparent bg-clip-text bg-gradient-to-r from-neon-purple via-neon-cyan to-neon-green font-display uppercase tracking-widest;
+}
+
+/* Cyber Button */
+.btn-cyber {
+  @apply relative px-8 py-3 font-bold uppercase tracking-widest text-sm transition-all duration-300 border border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan hover:text-black hover:shadow-[0_0_20px_rgba(0,243,255,0.5)];
+  clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+}
+
+.btn-primary {
+  @apply relative px-8 py-3 font-bold uppercase tracking-widest text-sm bg-neon-purple text-white hover:bg-white hover:text-black transition-all;
+  clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
+}
+/* ... keep your existing code ... */
+
+/* CUSTOM SCROLLBAR */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050505; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333; 
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b026ff; /* Neon Purple on hover */
+  box-shadow: 0 0 10px #b026ff;
+}
+
+/* SELECTION COLOR (When you highlight text) */
+::selection {
+  background: #00f3ff; /* Neon Cyan */
+  color: #000;
+}

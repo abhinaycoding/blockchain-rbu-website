@@ -8,7 +8,7 @@
 > **The official website for the Blockchain Student Chapter at RBU.** > Built to showcase the future of Web3 with high-performance animations, 3D interactivity, and cinematic UI design.
 
 ## 🚀 Live Demo
-**[View the Live Site Here](https://your-vercel-link-here.vercel.app)** *(Replace this link after you deploy!)*
+**[View the Live Site Here](https://blockchain-rbu-website.vercel.app/)**
 
 ---
 
@@ -19,17 +19,17 @@
 - **Hacker Text Effect:** Dynamic text decoding/hashing animation on the Hero section.
 - **Magnetic Physics:** Interactive 3D Bitcoin element that responds to mouse movement.
 
-### 💳 Interactive Membership System
-- **Real-time Pass Generator:** Users can input their details to generate a holographic "Official Member Pass" instantly.
-- **3D Tilt Effect:** The membership card reacts to cursor position with a realistic holographic shine.
+### 💳 Interactive Membership Portal
+- **Real-time Pass Generator:** Users can input their name and RBU email to generate a custom holographic "Official Member Pass".
+- **Live Preview:** The membership card updates instantly as the user types, featuring a realistic 3D tilt effect and holographic shine.
 
-### 👥 Editorial Team Section
-- **Dynamic Layout:** A responsive flex-grid that perfectly centers 7+ members.
-- **Grayscale-to-Color:** High-end hover interactions for member profiles.
-- **Glassmorphism:** Modern frosted glass UI elements.
+### 👥 "The Council" (Team Section)
+- **Editorial Design:** A high-end, flexible layout that perfectly aligns team members regardless of count.
+- **Interactive Profiles:** Grayscale-to-color transitions and floating skill badges (e.g., SOLIDITY, STRATEGY) on hover.
+- **Glassmorphism:** Modern frosted glass UI elements overlaying member portraits.
 
 ### 🛠️ "Something is Cooking"
-- **SPA Routing:** Seamless view transitions without page reloads using React State.
+- **Seamless Routing:** Custom Single Page Application (SPA) state logic to handle view transitions without page reloads.
 
 ---
 

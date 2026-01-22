@@ -1,88 +1,90 @@
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+
+const words = [
+  "INITIALIZING...",
+  "LOADING ASSETS...",
+  "ESTABLISHING UPLINK...",
+  "DECRYPTING CORE...",
+  "ACCESS GRANTED."
+];
 
 const Preloader = ({ onComplete }) => {
   const [count, setCount] = useState(0);
+  const [textIndex, setTextIndex] = useState(0);
 
   useEffect(() => {
-    const duration = 2000; 
-    const steps = 100;
-    const intervalTime = duration / steps;
-
-    const timer = setInterval(() => {
+    // 1. The Counter Logic
+    const interval = setInterval(() => {
       setCount((prev) => {
-        if (prev >= 100) {
-          clearInterval(timer);
-          setTimeout(onComplete, 800); 
+        // If we hit 100, stop the counter and trigger the exit
+        if (prev === 100) {
+          clearInterval(interval);
+          // Small delay before lifting the shutters so user sees "100%"
+          setTimeout(onComplete, 200); 
           return 100;
         }
+        
+        // Cycle through the "hacker text" every ~15 numbers
+        if (prev % 15 === 0) {
+          setTextIndex((i) => (i + 1) % words.length);
+        }
+        
         return prev + 1;
       });
-    }, intervalTime);
+    }, 25); // Speed of loading (lower = faster)
 
-    return () => clearInterval(timer);
+    return () => clearInterval(interval);
   }, [onComplete]);
 
+  // 2. The Shutters (5 columns for the reveal effect)
+  const columns = [0, 1, 2, 3, 4];
+
   return (
-    <motion.div
-      initial={{ y: 0 }}
-      exit={{ 
-        y: "-100%", 
-        transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } 
-      }}
-      className="fixed inset-0 z-[99999] flex items-center justify-center bg-black text-white overflow-hidden"
-    >
-      <motion.div 
-        initial={{ opacity: 1 }}
-        exit={{ 
-          y: "20%", 
-          opacity: 0, 
-          transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } 
-        }}
-        className="relative w-full h-full flex flex-col items-center justify-center"
-      >
-        <div className="relative mb-4 overflow-hidden">
-          <motion.h1 
-            initial={{ y: "100%" }}
-            animate={{ y: "0%" }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-4xl md:text-7xl font-bold tracking-tighter text-center px-4"
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center pointer-events-none">
+      
+      {/* BACKGROUND SHUTTERS (Black bars that slide up) */}
+      <div className="absolute inset-0 flex h-full w-full">
+        {columns.map((i) => (
+          <motion.div
+            key={i}
+            initial={{ height: "100%" }}
+            exit={{ height: "0%" }} // <--- This is the Reveal Animation
+            transition={{
+              duration: 0.8,
+              ease: [0.76, 0, 0.24, 1], // Cinematic easing
+              delay: i * 0.1, // Staggered delay (Wave effect)
+            }}
+            className="w-1/5 h-full bg-black border-r border-white/10 relative overflow-hidden"
           >
-            BLOCKCHAIN <span className="text-cyan-400">RBU</span>
-          </motion.h1>
-        </div>
+             {/* Optional: Digital noise texture inside bars */}
+             <div className="absolute inset-0 opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+          </motion.div>
+        ))}
+      </div>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
-          className="font-mono text-purple-500 text-xs md:text-sm tracking-[0.3em] uppercase mb-12"
-        >
-          Student Chapter
-        </motion.p>
-
-        <div className="absolute bottom-10 right-10 text-6xl md:text-9xl font-bold font-mono text-transparent stroke-text tabular-nums opacity-50">
+      {/* TEXT CONTENT (Fades out *before* shutters lift) */}
+      <motion.div
+        initial={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
+        className="relative z-10 flex flex-col items-center justify-center text-white mix-blend-difference"
+      >
+        {/* Giant Counter */}
+        <h1 className="text-9xl md:text-[12rem] font-bold font-mono tracking-tighter leading-none">
           {count}%
-        </div>
-
-        <div className="absolute bottom-12 left-10 w-32 md:w-64 h-[1px] bg-gray-800">
-          <motion.div 
-            className="h-full bg-cyan-400"
-            initial={{ width: 0 }}
-            animate={{ width: `${count}%` }}
-          />
+        </h1>
+        
+        {/* Blinking Status Text */}
+        <div className="mt-4 flex items-center gap-2">
+           <div className="w-2 h-2 bg-green-500 rounded-full animate-ping" />
+           <span className="text-sm md:text-base font-mono tracking-[0.2em] text-gray-400 uppercase">
+             {words[textIndex]}
+           </span>
         </div>
       </motion.div>
 
-      <style jsx>{`
-        .stroke-text {
-          -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
-        }
-        .tabular-nums {
-          font-variant-numeric: tabular-nums;
-        }
-      `}</style>
-    </motion.div>
+    </div>
   );
 };
 

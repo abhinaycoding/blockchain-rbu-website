@@ -2,20 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
+/* =========================================
+   1. GLOBAL RESETS & MOBILE POLISH
+   ========================================= */
 html, body {
-  overflow-x: hidden; /* STOPS THE PAGE FROM SHAKING LEFT/RIGHT */
   width: 100%;
+  overflow-x: hidden; /* CRITICAL: Prevents side-scrolling on mobile */
   position: relative;
+  overscroll-behavior-y: none; /* Prevents "bounce" effect on Mac/iOS */
+  scroll-behavior: smooth;
 }
+
 body {
-  @apply bg-dark text-white font-sans overflow-x-hidden;
+  @apply bg-black text-white font-sans;
+  /* subtle grid background */
   background-size: 40px 40px;
   background-image: 
     linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
 }
 
-/* Futuristic Card */
+/* =========================================
+   2. RESPONSIVE 3D COIN FIX
+   ========================================= */
+.coin-spinner {
+  /* Mobile: Smaller size to fit screen */
+  width: 200px;
+  height: 200px;
+}
+
+/* Desktop: Restore full size */
+@media (min-width: 768px) {
+  .coin-spinner {
+    width: 450px;
+    height: 450px;
+  }
+}
+
+/* =========================================
+   3. CYBERPUNK UTILITY CLASSES
+   ========================================= */
+
+/* Futuristic Card Effect */
 .cyber-card {
   @apply bg-black/40 backdrop-blur-md border border-white/10 relative overflow-hidden transition-all duration-300;
 }
@@ -23,24 +51,48 @@ body {
   @apply border-neon-cyan/50 shadow-[0_0_20px_rgba(0,243,255,0.2)];
 }
 
-/* Neon Text */
+/* Neon Gradient Text */
 .text-neon {
-  @apply text-transparent bg-clip-text bg-gradient-to-r from-neon-purple via-neon-cyan to-neon-green font-display uppercase tracking-widest;
+  @apply text-transparent bg-clip-text bg-gradient-to-r from-neon-purple via-neon-cyan to-neon-green uppercase tracking-widest;
 }
 
-/* Cyber Button */
+/* Cyber Button (Polygon Shape) */
 .btn-cyber {
   @apply relative px-8 py-3 font-bold uppercase tracking-widest text-sm transition-all duration-300 border border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan hover:text-black hover:shadow-[0_0_20px_rgba(0,243,255,0.5)];
   clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
 }
 
+/* Primary Button (Polygon Shape) */
 .btn-primary {
   @apply relative px-8 py-3 font-bold uppercase tracking-widest text-sm bg-neon-purple text-white hover:bg-white hover:text-black transition-all;
   clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
 }
-/* ... keep your existing code ... */
 
-/* CUSTOM SCROLLBAR */
+/* =========================================
+   4. ANIMATIONS
+   ========================================= */
+
+/* Tech Ticker Animation */
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* Adjusted to 50% for smoother infinite loop */
+}
+
+.animate-ticker {
+  animation: ticker 20s linear infinite;
+}
+
+/* =========================================
+   5. BROWSER CUSTOMIZATION
+   ========================================= */
+
+/* Selection Color (Highlighting text) */
+::selection {
+  background: #00f3ff; /* Neon Cyan */
+  color: #000;
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -57,10 +109,4 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #b026ff; /* Neon Purple on hover */
   box-shadow: 0 0 10px #b026ff;
-}
-
-/* SELECTION COLOR (When you highlight text) */
-::selection {
-  background: #00f3ff; /* Neon Cyan */
-  color: #000;
 }

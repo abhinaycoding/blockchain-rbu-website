@@ -8,7 +8,7 @@ import Hero from './components/Hero';
 import TechTicker from './components/TechTicker';
 import About from './components/About';
 import Perks from './components/Perks';
-import GenesisTimeline from './components/GenesisTimeline';
+import Timeline from './components/Timeline';
 import Events from './components/Events';
 import Team from './components/Team';
 import FAQ from './components/FAQ';
@@ -16,13 +16,12 @@ import JoinForm from './components/JoinForm';
 import Footer from './components/Footer';
 import NoiseOverlay from './components/NoiseOverlay';
 import VelocityScroll from './components/VelocityScroll';
-
-// <--- CHANGED: Import the new Preloader
 import Preloader from './components/Preloader'; 
+import Cooking from './components/Cooking'; // <--- 1. IMPORT THIS
 
 function App() {
-  // STATE: Controls if Preloader is visible
   const [isLoading, setIsLoading] = useState(true);
+  const [currentView, setCurrentView] = useState('home'); // <--- 2. ADD VIEW STATE
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -48,13 +47,23 @@ function App() {
     };
   }, []);
 
+  // 3. IF VIEW IS 'COOKING', RENDER ONLY THAT PAGE
+  if (currentView === 'cooking') {
+    return (
+      <>
+        <NoiseOverlay />
+        <Cooking onBack={() => setCurrentView('home')} />
+      </>
+    );
+  }
+
+  // 4. OTHERWISE RENDER THE MAIN WEBSITE
   return (
     <div className="bg-black min-h-screen text-white selection:bg-neon-cyan selection:text-black">
       
       {/* PRELOADER LOGIC */}
       <AnimatePresence mode='wait'>
         {isLoading && (
-          // <--- CHANGED: Use Preloader component
           <Preloader onComplete={() => setIsLoading(false)} />
         )}
       </AnimatePresence>
@@ -64,16 +73,23 @@ function App() {
       
       {/* MAIN SECTIONS */}
       <Navbar />
-      <Hero />
-      <VelocityScroll />
-      <TechTicker />
-      <About />
-      <Perks />
-      <GenesisTimeline />
-      <Events />
-      <Team />
-      <FAQ />
-      <JoinForm />
+      
+      <main className="relative z-10">
+        
+        {/* 5. PASS THE CLICK HANDLER TO HERO */}
+        <Hero onJoinClick={() => setCurrentView('cooking')} />
+        
+        <VelocityScroll />
+        <TechTicker />
+        <About />
+        <Perks />
+        <Timeline />
+        <Events />
+        <Team />
+        <FAQ />
+        <JoinForm />
+      </main>
+
       <Footer />
     </div>
   );

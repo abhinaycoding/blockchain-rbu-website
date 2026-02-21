@@ -1,122 +1,194 @@
 import React, { useState, useEffect } from 'react';
-import { MessageCircle, ExternalLink, Menu, X } from 'lucide-react';
-import MagneticWrapper from './MagneticWrapper';
+import { motion, AnimatePresence } from 'framer-motion';
+import { MessageCircle, ExternalLink, Menu, X, Home, Info, Calendar, Users } from 'lucide-react';
 import HackerText from './HackerText';
-import logo from '../assets/logo.jpg'; 
+import logo from '../assets/logo.jpg';
 
 const Navbar = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
 
-  // LOGIC: Calculate scroll percentage
+  // Handle Scroll to determine if we should collapse the island
   useEffect(() => {
-    const updateScrollProgress = () => {
-      const currentScroll = window.scrollY;
-      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-      if (scrollHeight) {
-        setScrollProgress((currentScroll / scrollHeight) * 100);
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
       }
     };
 
-    window.addEventListener('scroll', updateScrollProgress);
-    return () => window.removeEventListener('scroll', updateScrollProgress);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const menuItems = ['HOME', 'ABOUT', 'EVENTS', 'TEAM'];
+  // Menu items with icons for the expanded state
+  const menuItems = [
+    { name: 'HOME', id: 'home', icon: Home },
+    { name: 'ABOUT', id: 'about', icon: Info },
+    { name: 'EVENTS', id: 'events', icon: Calendar },
+    { name: 'TEAM', id: 'team', icon: Users },
+  ];
+
+  // Determine if the island should be expanded (not scrolled, OR hovered while scrolled)
+  const isExpanded = !isScrolled || isHovered;
 
   return (
-    <nav className="fixed w-full z-[100] border-b border-white/10 bg-black/80 backdrop-blur-md">
+    // Fixed positioning wrapper to keep it at the top
+    <div className="fixed top-0 left-0 w-full z-[100] flex justify-center pt-6 pointer-events-none px-4">
       
-      {/* --- NEW: SCROLL PROGRESS BAR --- */}
-      <div 
-        className="absolute top-0 left-0 h-[2px] bg-gradient-to-right from-neon-cyan to-neon-purple shadow-[0_0_10px_rgba(0,243,255,0.8)] transition-all duration-150 ease-out"
-        style={{ width: `${scrollProgress}%`, background: 'linear-gradient(90deg, #00ffff, #9e88f6)' }}
-      />
-
-      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      {/* 
+        The Dynamic Island Container 
+        pointer-events-auto allows this specific element to be clickable despite the wrapper 
+      */}
+      <motion.nav
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ 
+          y: 0, 
+          opacity: 1,
+          width: isMobileMenuOpen ? "100%" : (isExpanded ? "90%" : "280px"),
+          borderRadius: isMobileMenuOpen ? "24px" : "100px" // More square when mobile menu is open
+        }}
+        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+        className="pointer-events-auto max-w-7xl bg-black/60 backdrop-blur-xl border border-white/10 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col items-center"
+      >
         
-        {/* LOGO SECTION */}
-        <a href="#" className="flex items-center gap-3 group">
-          <div className="relative">
-            <div className="absolute -inset-1 bg-neon-cyan/50 rounded-full opacity-0 group-hover:opacity-100 blur transition-opacity duration-500" />
-            <div className="relative h-10 w-10 md:h-12 md:w-12 rounded-full overflow-hidden border border-white/10 group-hover:border-neon-cyan transition-colors">
-              <img 
-                src={logo} 
-                alt="BRC Logo"
-                className="h-full w-full object-cover"
-              />
-            </div>
-          </div>
+        {/* TOP BAR / ALWAYS VISIBLE (or collapsed state) */}
+        <div className="w-full h-16 md:h-20 px-4 md:px-8 flex justify-between items-center shrink-0">
           
-          <div className="font-display font-bold text-lg md:text-xl tracking-tighter leading-none">
-            BLOCK
-            <span className="text-neon-cyan group-hover:text-neon-purple transition-colors"> CHAIN</span>
-            <span className="block text-[8px] md:text-[10px] font-mono text-gray-400 tracking-widest group-hover:text-white transition-colors uppercase">
-              Student Chapter
-            </span>
-          </div>
-        </a>
+          {/* LOGO (Always Visible) */}
+          <a href="#" className="flex items-center gap-3 group shrink-0" onClick={() => setIsMobileMenuOpen(false)}>
+            <div className="relative h-10 w-10 md:h-12 md:w-12 rounded-full overflow-hidden border border-white/10 group-hover:border-neon-cyan transition-colors">
+               <img src={logo} alt="BRC Logo" className="h-full w-full object-cover" />
+            </div>
+            
+            {/* Logo Text - Hides when fully collapsed to save space */}
+            <AnimatePresence>
+              {isExpanded && (
+                <motion.div 
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{ opacity: 1, width: "auto" }}
+                  exit={{ opacity: 0, width: 0 }}
+                  className="font-display font-bold text-lg md:text-xl tracking-tighter leading-none whitespace-nowrap overflow-hidden hidden md:block"
+                >
+                  BLOCK<span className="text-neon-cyan group-hover:text-neon-purple transition-colors"> CHAIN</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </a>
 
-        {/* DESKTOP MENU */}
-        <div className="hidden md:flex gap-8 font-mono text-sm text-gray-400">
-          {menuItems.map((item) => (
-            <a key={item} href={`#${item.toLowerCase()}`} className="group flex items-center">
-              <span className="text-neon-purple mr-1 group-hover:text-white transition-colors">//</span>
-              <HackerText 
-                text={item} 
-                className="group-hover:text-neon-cyan group-hover:shadow-[0_0_10px_rgba(0,243,255,0.4)] transition-all duration-300"
-              />
-            </a>
-          ))}
-        </div>
-
-        {/* JOIN BUTTON + MOBILE TOGGLE */}
-        <div className="flex items-center gap-4">
-          <div className="hidden sm:block">
-            <MagneticWrapper>
-              <a 
-                href="https://www.instagram.com/blockchain_rbu"
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="group border border-neon-purple/50 px-6 py-2 font-mono text-xs uppercase flex items-center gap-2 text-neon-purple hover:bg-neon-purple hover:text-white hover:shadow-[0_0_15px_rgba(176,38,255,0.4)] transition-all"
+          {/* DESKTOP MENU - Visible when expanded */}
+          <AnimatePresence>
+            {isExpanded && (
+              <motion.div 
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="hidden md:flex gap-8 font-mono text-sm text-gray-400 absolute left-1/2 -translate-x-1/2"
               >
-                <MessageCircle size={14} className="group-hover:animate-bounce" />
-                <span>Join</span>
-                <ExternalLink size={10} className="opacity-50" />
-              </a>
-            </MagneticWrapper>
-          </div>
+                {menuItems.map((item) => (
+                  <a key={item.name} href={`#${item.id}`} className="group flex items-center hover:text-white transition-colors">
+                    <span className="text-neon-purple mr-2 opacity-0 group-hover:opacity-100 transition-opacity"><item.icon size={14} /></span>
+                    <HackerText text={item.name} />
+                  </a>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-          <button 
-            className="md:hidden text-neon-cyan p-1"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
-        </div>
-      </div>
+          {/* RIGHT SIDE (Join Button or Hamburger) */}
+          <div className="flex items-center gap-4 shrink-0">
+            
+            {/* Join Button - Visible when Expanded on Desktop OR always on Mobile if room */}
+            <AnimatePresence>
+              {(isExpanded || !isScrolled) && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  className="hidden sm:block"
+                >
+                  <a 
+                    href="https://www.instagram.com/blockchain_rbu"
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="group border border-neon-purple/50 px-6 py-2 rounded-full font-mono text-xs uppercase flex items-center gap-2 text-neon-purple hover:bg-neon-purple hover:text-white transition-all hover:scale-105 active:scale-95"
+                  >
+                    <MessageCircle size={14} className="group-hover:animate-bounce" />
+                    <span>Join Us</span>
+                  </a>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-      {/* MOBILE MENU DROPDOWN */}
-      <div className={`
-        absolute top-full left-0 w-full bg-black/95 backdrop-blur-xl border-b border-white/10 transition-all duration-300 ease-in-out overflow-hidden
-        ${isMobileMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}
-        md:hidden
-      `}>
-        <div className="flex flex-col p-8 gap-6 font-mono text-lg">
-          {menuItems.map((item) => (
-            <a 
-              key={item} 
-              href={`#${item.toLowerCase()}`}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="flex items-center gap-4 text-gray-400"
+            {/* Mobile Menu Toggle */}
+            <button 
+              className="md:hidden text-neon-cyan p-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
-              <span className="text-neon-purple text-sm">// 0{menuItems.indexOf(item) + 1}</span>
-              {item}
-            </a>
-          ))}
+              <AnimatePresence mode="wait">
+                {isMobileMenuOpen ? (
+                  <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }}>
+                    <X size={20} />
+                  </motion.div>
+                ) : (
+                  <motion.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }}>
+                    <Menu size={20} />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </button>
+          </div>
         </div>
-      </div>
-    </nav>
+
+        {/* MOBILE MENU DROPDOWN (Inside the island) */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div 
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="w-full md:hidden"
+            >
+              <div className="flex flex-col p-6 pt-0 gap-4 font-mono text-lg border-t border-white/5 mt-2">
+                {menuItems.map((item, index) => (
+                  <motion.a 
+                    key={item.name} 
+                    href={`#${item.id}`}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="flex items-center gap-4 text-gray-400 py-2 border-b border-white/5"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-neon-purple/10 flex items-center justify-center text-neon-purple">
+                      <item.icon size={16} />
+                    </div>
+                    {item.name}
+                  </motion.a>
+                ))}
+                
+                <motion.a 
+                  href="https://www.instagram.com/blockchain_rbu"
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  initial={{ x: -20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 0.4 }}
+                  className="mt-4 w-full bg-neon-purple text-white py-3 rounded-xl flex justify-center items-center gap-2 font-bold uppercase text-sm"
+                >
+                  <MessageCircle size={18} /> Join on Instagram
+                </motion.a>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+      </motion.nav>
+    </div>
   );
 };
 

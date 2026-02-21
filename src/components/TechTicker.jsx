@@ -18,11 +18,11 @@ const TechTicker = () => {
   ];
 
   return (
-    <section className="py-10 bg-black overflow-hidden border-y border-white/10 relative z-20">
+    <section className="py-10 bg-transparent overflow-hidden border-y border-white/10 relative z-20">
       
       {/* The Gradient Fade on sides (makes it look 3D) */}
-      <div className="absolute top-0 left-0 w-20 md:w-40 h-full bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
-      <div className="absolute top-0 right-0 w-20 md:w-40 h-full bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-0 left-0 w-20 md:w-40 h-full bg-gradient-to-r from-black/80 to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-20 md:w-40 h-full bg-gradient-to-l from-black/80 to-transparent z-10 pointer-events-none" />
 
       <div className="flex">
         {/* We duplicate the list twice to ensure a seamless infinite loop */}

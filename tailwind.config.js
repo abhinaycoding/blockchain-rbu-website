@@ -27,6 +27,7 @@ export default {
         'noise': 'noise 0.5s steps(10) infinite',
         'marquee': 'marquee 20s linear infinite',
         'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'shimmer': 'shimmer 2s linear infinite',
       },
 
       // 4. KEYFRAMES (Merged)
@@ -46,6 +47,10 @@ export default {
         marquee: {
           '0%': { transform: 'translateX(0%)' },
           '100%': { transform: 'translateX(-100%)' },
+        },
+        shimmer: {
+          from: { transform: 'translateX(-100%)' },
+          to: { transform: 'translateX(200%)' },
         },
       },
     },

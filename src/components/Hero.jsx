@@ -33,17 +33,17 @@ const Hero = ({ onJoinClick }) => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center bg-[#050505] text-white overflow-hidden selection:bg-orange-500/30">
+    <section className="relative min-h-screen flex items-center bg-transparent text-white overflow-hidden selection:bg-orange-500/30">
       
       {/* Background Ambience */}
       <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-orange-600/10 rounded-full blur-[120px] animate-pulse" />
       <div className="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-blue-600/5 rounded-full blur-[100px]" />
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-20" />
 
-      <div className="relative max-w-7xl mx-auto px-6 w-full grid lg:grid-cols-2 gap-16 items-center pt-20">
+      <div className="relative max-w-7xl mx-auto px-6 w-full flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 pt-20 lg:items-center">
         
         {/* LEFT SIDE: Content */}
-        <div className="order-2 lg:order-1 relative z-20">
+        <div className="relative z-20 w-full lg:w-auto mt-4 lg:mt-0 order-1">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -79,7 +79,7 @@ const Hero = ({ onJoinClick }) => {
             <div className="flex flex-col sm:flex-row gap-5 items-start sm:items-center">
               <MagneticWrapper>
                 <button 
-                  onClick={onJoinClick} // <--- 2. Add the onClick handler here
+                  onClick={onJoinClick}
                   className="group relative px-8 py-4 bg-orange-500 text-black font-bold uppercase tracking-widest overflow-hidden transition-transform active:scale-95"
                 >
                   <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
@@ -102,14 +102,14 @@ const Hero = ({ onJoinClick }) => {
 
         {/* RIGHT SIDE: MAGNETIC 3D COIN */}
         <div 
-          className="order-1 lg:order-2 h-[400px] md:h-[600px] flex items-center justify-center perspective-container"
+          className="hidden lg:flex lg:order-2 lg:w-full lg:h-[600px] items-center justify-center perspective-container z-0 ml-auto lg:ml-0 mt-8 lg:mt-0 pointer-events-auto"
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           ref={ref}
         >
           <motion.div 
             style={{ rotateX, rotateY }}
-            className="relative w-full h-full flex items-center justify-center cursor-pointer"
+            className="relative w-full h-full flex items-center justify-center cursor-pointer pointer-events-auto"
           >
             <div className="coin-spinner">
               {[...Array(16)].map((_, i) => (
@@ -122,7 +122,7 @@ const Hero = ({ onJoinClick }) => {
                   }} 
                 >
                   <img 
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/1200px-Bitcoin.svg.png" 
+                    src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" 
                     alt="Bitcoin" 
                     className="w-full h-full object-cover pointer-events-none"
                   />

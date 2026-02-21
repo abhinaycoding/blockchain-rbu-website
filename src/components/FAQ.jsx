@@ -32,7 +32,7 @@ const FAQ = () => {
   ];
 
   return (
-    <section className="py-24 bg-dark relative">
+    <section className="py-24 bg-transparent relative z-10">
       <div className="max-w-3xl mx-auto px-6">
         <h2 className="text-4xl font-display font-bold mb-12 text-center">
           STUDENT <span className="text-neon-cyan">FAQ</span>
@@ -42,8 +42,8 @@ const FAQ = () => {
           {faqs.map((faq, i) => (
             <div 
               key={i} 
-              className={`border transition-all duration-300 ${
-                openIndex === i ? 'border-neon-purple bg-white/5' : 'border-white/10 bg-black'
+              className={`border backdrop-blur-md rounded-xl overflow-hidden transition-all duration-300 ${
+                openIndex === i ? 'border-neon-purple bg-white/10 shadow-[0_0_15px_rgba(176,38,255,0.2)]' : 'border-white/10 bg-black/40 hover:bg-white/5'
               }`}
             >
               <button 

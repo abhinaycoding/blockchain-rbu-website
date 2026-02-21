@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Lenis from 'lenis';
 import { AnimatePresence } from 'framer-motion'; 
 
-// IMPORT COMPONENTS
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import TechTicker from './components/TechTicker';
@@ -12,12 +11,13 @@ import Timeline from './components/Timeline';
 import Events from './components/Events';
 import Team from './components/Team';
 import FAQ from './components/FAQ';
-import JoinForm from './components/JoinForm';
 import Footer from './components/Footer';
 import NoiseOverlay from './components/NoiseOverlay';
-import VelocityScroll from './components/VelocityScroll';
 import Preloader from './components/Preloader'; 
 import Cooking from './components/Cooking'; // <--- 1. IMPORT THIS
+import Resources from './components/Resources';
+import ParticlesBackground from './components/ParticlesBackground';
+import CyberBackground from './components/CyberBackground'; // <--- ADDED CYBER BACKGROUND
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -59,7 +59,7 @@ function App() {
 
   // 4. OTHERWISE RENDER THE MAIN WEBSITE
   return (
-    <div className="bg-black min-h-screen text-white selection:bg-neon-cyan selection:text-black">
+    <div className="bg-transparent min-h-screen text-white selection:bg-neon-cyan selection:text-black">
       
       {/* PRELOADER LOGIC */}
       <AnimatePresence mode='wait'>
@@ -69,6 +69,8 @@ function App() {
       </AnimatePresence>
 
       {/* GLOBAL OVERLAYS */}
+      <CyberBackground />
+      <ParticlesBackground />
       <NoiseOverlay />
       
       {/* MAIN SECTIONS */}
@@ -79,15 +81,14 @@ function App() {
         {/* 5. PASS THE CLICK HANDLER TO HERO */}
         <Hero onJoinClick={() => setCurrentView('cooking')} />
         
-        <VelocityScroll />
         <TechTicker />
         <About />
+        <Resources />
         <Perks />
         <Timeline />
         <Events />
         <Team />
         <FAQ />
-        <JoinForm />
       </main>
 
       <Footer />

@@ -2,14 +2,82 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    
-    <link rel="icon" type="image/jpeg" href="/src/assets/Favicon.jpg" />
-    
+
+    <!-- ============================================== -->
+    <!-- PRIMARY SEO & METADATA -->
+    <!-- ============================================== -->
+    <title>Blockchain RBU Chapter | Student Web3 Innovators</title>
+    <meta
+      name="description"
+      content="The official Blockchain Chapter running at RBU. A premium hub for students to build, learn, and innovate with Web3, decentralized finance, and smart contracts."
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
-    <title>Blockchain RBU Chapter</title>
+    <meta name="theme-color" content="#050505" />
+    <link rel="icon" type="image/jpeg" href="/src/assets/Favicon.jpg" />
+    <link rel="canonical" href="https://blockchain-rbu.org" />
+    <!-- Update with final domain -->
+
+    <!-- ============================================== -->
+    <!-- FRONTEND SECURITY HARDENING (PRODUCTION) -->
+    <!-- ============================================== -->
+    <!-- Content Security Policy: strictly controls where resources can load from to prevent XSS. 
+         (Note: In a true prod build with analytics, you might need to whitelist specific domains like google-analytics.com here) -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="
+      default-src 'self'; 
+      script-src 'self' 'unsafe-inline' 'unsafe-eval'; 
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
+      font-src 'self' data: https://fonts.gstatic.com; 
+      img-src 'self' data: https://images.unsplash.com https://grainy-gradients.vercel.app https://cryptologos.cc; 
+      connect-src 'self' ws: wss:;
+      frame-src 'none';
+      object-src 'none';
+    "
+    />
+    <!-- Prevents Clickjacking (Loading site in a hidden iframe) -->
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <!-- Prevents MIME-Sniffing (Tricking browser into executing non-scripts) -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <!-- strict referrer policy -->
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <!-- Disable access to sensitive APIs like Camera and Mic -->
+    <meta
+      http-equiv="Permissions-Policy"
+      content="camera=(), microphone=(), geolocation=(), payment=()"
+    />
+
+    <!-- ============================================== -->
+    <!-- OPEN GRAPH (DISCORD, LINKEDIN, FACEBOOK) -->
+    <!-- ============================================== -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://blockchain-rbu.org/" />
+    <meta property="og:title" content="Blockchain RBU Chapter" />
+    <meta
+      property="og:description"
+      content="The premier student hub for Web3 innovation. Learn, build, and deploy decentralized technology."
+    />
+    <meta property="og:image" content="/src/assets/Favicon.jpg" />
+    <!-- Consider adding a specific 1200x630 OG banner image later -->
+
+    <!-- ============================================== -->
+    <!-- TWITTER CARDS -->
+    <!-- ============================================== -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Blockchain RBU Chapter" />
+    <meta
+      name="twitter:description"
+      content="The premier student hub for Web3 innovation. Learn, build, and deploy decentralized technology."
+    />
+    <meta name="twitter:image" content="/src/assets/Favicon.jpg" />
+
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syncopate:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div id="root"></div>

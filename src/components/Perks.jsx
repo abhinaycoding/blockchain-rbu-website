@@ -97,7 +97,7 @@ const Perks = () => {
   ];
 
   return (
-    <section className="bg-black py-24 relative overflow-hidden">
+    <section className="bg-transparent py-24 relative overflow-hidden z-10">
       {/* Decorative blurred blob in background */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-purple/20 rounded-full blur-[128px] pointer-events-none" />
 

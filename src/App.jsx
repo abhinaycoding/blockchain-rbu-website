@@ -24,6 +24,8 @@ function App() {
   const [currentView, setCurrentView] = useState('home'); // <--- 2. ADD VIEW STATE
 
   useEffect(() => {
+    // Only initialize Lenis on non-touch or large devices if desired, 
+    // but default config with smoothTouch: false usually works IF CSS is correct.
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -59,7 +61,7 @@ function App() {
 
   // 4. OTHERWISE RENDER THE MAIN WEBSITE
   return (
-    <div className="bg-transparent min-h-screen text-white selection:bg-neon-cyan selection:text-black">
+    <div className="bg-transparent min-h-screen text-white selection:bg-neon-cyan selection:text-black overflow-x-hidden w-full">
       
       {/* PRELOADER LOGIC */}
       <AnimatePresence mode='wait'>

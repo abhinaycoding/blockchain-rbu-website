@@ -3,159 +3,241 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const Preloader = ({ onComplete }) => {
   const [clicked, setClicked] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [loadingText, setLoadingText] = useState("INITIALIZING NODE CORE...");
   const [isReady, setIsReady] = useState(false);
-  
-  // Fake a loading sequence before allowing click to build suspense
+
+  // Fake Loading Sequence
   useEffect(() => {
-    const timer = setTimeout(() => setIsReady(true), 2500); 
-    return () => clearTimeout(timer);
+    const messages = [
+      "ESTABLISHING SECURE HANDSHAKE...",
+      "SYNCING BLOCKCHAIN LEDGERS...",
+      "VERIFYING SMART CONTRACT INTEGRITY...",
+      "DECENTRALIZED ACCESS GRANTED"
+    ];
+    let msgIndex = 0;
+    
+    const interval = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setIsReady(true);
+          return 100;
+        }
+        
+        // Update text based on progress thresholds
+        if (prev > 25 && msgIndex === 0) { msgIndex = 1; setLoadingText(messages[msgIndex]); }
+        if (prev > 50 && msgIndex === 1) { msgIndex = 2; setLoadingText(messages[msgIndex]); }
+        if (prev > 85 && msgIndex === 2) { msgIndex = 3; setLoadingText(messages[msgIndex]); }
+
+        // Random jump increments for realism (slow at end)
+        const increment = prev > 80 ? Math.random() * 3 + 1 : Math.random() * 12 + 2;
+        return Math.min(prev + increment, 100); 
+      });
+    }, 150);
+
+    return () => clearInterval(interval);
   }, []);
 
-  const handleClick = () => {
-    if (!isReady) return;
+  const handleEnter = () => {
+    if (!isReady || clicked) return;
     setClicked(true);
     
-    // Wait for explosion animation to finish before unmounting preloader
-    // This allows the shards to fly away and the site to be fully revealed
+    // Implosion delay before doors sweep open
     setTimeout(() => {
       onComplete();
-    }, 1200); 
+    }, 1600); // Extended slightly for cinematic exit
   };
 
-  // Generate a smaller grid of 24 'shards' (6 columns x 4 rows) for better performance
-  const shards = Array.from({ length: 24 }); 
-  
-  // Generate 100 tiny particles for the central explosion
-  const explosionParticles = Array.from({ length: 100 }); 
+  // Generate background connecting nodes
+  const nodes = Array.from({ length: 25 });
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black overflow-hidden">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#010203] overflow-hidden font-sans">
       
-      {/* GLOWING AMBIENT BACKGROUND */}
+      {/* PREMIUM DEEP AMBIENT LIGHTING */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:54px_54px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-neon-purple/20 rounded-full blur-[100px]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] md:w-[400px] h-[200px] md:h-[400px] bg-neon-cyan/10 rounded-full blur-[80px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-neon-cyan/5 rounded-full blur-[120px] will-change-transform transform-gpu" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-[#010203] rounded-full blur-[50px] z-10" /> {/* Inner dark void */}
       </div>
 
-      {/* SHATTERING BACKGROUND GRID (Now Glassmorphism) */}
-      <div className="absolute inset-0 grid grid-cols-6 grid-rows-4 w-full h-full pointer-events-none z-10">
-        {shards.map((_, i) => (
+      {/* SUBTLE DOTTED GRID */}
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(#00f3ff1a_1px,transparent_1px)] bg-[size:40px_40px] opacity-20 [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_80%,transparent_100%)]"></div>
+
+      {/* FLOATING PARTICLES */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        {nodes.map((_, i) => (
           <motion.div
-            key={i}
-            initial={{ opacity: 1, scale: 1, x: 0, y: 0, rotate: 0 }}
+            key={`node-${i}`}
+            initial={{ opacity: 0, scale: Math.random() * 0.5 + 0.5, x: Math.random() * 400 - 200, y: Math.random() * 400 - 200 }}
             animate={clicked ? {
+              // IMPLOSION EFFECT: All particles get sucked into the center rapidly
+              x: 0,
+              y: 0,
+              scale: 0,
               opacity: 0,
-              scale: Math.random() * 0.2, // shrink down
-              x: (Math.random() - 0.5) * 1500, // fly out violently
-              y: (Math.random() - 0.5) * 1500,
-              rotate: (Math.random() - 0.5) * 1080, // spin wildly
-            } : {}}
-            style={{ willChange: "transform, opacity" }} // Force GPU Hardware Acceleration
-            transition={{
-              duration: 0.8 + Math.random() * 0.4, // varied duration for chaos
-              ease: [0.19, 1, 0.22, 1], // easeOutExpo (fast start, slow end)
-              delay: clicked ? Math.random() * 0.1 : 0, // tiny staggered delay
+            } : { 
+              opacity: [0, 0.5, 0],
+              y: [Math.random() * 200 - 100, Math.random() * -200 + 100],
             }}
-            className="w-full h-full bg-black/40 backdrop-blur-[4px] border border-white/10"
-          >
-             {/* Digital Noise Texture inside the shard */}
-             <div className="absolute inset-0 opacity-40 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-          </motion.div>
-        ))}
-        
-        {/* PARTICLE EXPLOSION (Triggers on click) */}
-        {explosionParticles.map((_, i) => (
-          <motion.div
-            key={`particle-${i}`}
-            initial={{ opacity: 0, scale: 0, x: 0, y: 0 }}
-            animate={clicked ? {
-              opacity: [0, 1, 0],
-              scale: Math.random() * 1.5,
-              x: (Math.random() - 0.5) * (window.innerWidth || 1000), 
-              y: (Math.random() - 0.5) * (window.innerHeight || 1000),
-            } : {}}
-            style={{ willChange: "transform, opacity" }}
-            transition={{
-              duration: 0.5 + Math.random() * 0.5,
-              ease: "easeOut",
-              delay: clicked ? 0 : 0
+            transition={clicked ? {
+              duration: 0.6 + Math.random() * 0.2, ease: "anticipate"
+            } : {
+              duration: 15 + Math.random() * 15,
+              repeat: Infinity,
+              ease: "linear",
             }}
-            className="absolute top-1/2 left-1/2 w-1 h-1 md:w-2 md:h-2 bg-neon-cyan shadow-[0_0_10px_#00ffff] rounded-full blur-[1px]"
+            className="absolute top-1/2 left-1/2 w-[1px] h-[1px] bg-neon-cyan rounded-full shadow-[0_0_5px_#00ffff]"
+            style={{
+              marginLeft: `${(Math.random() - 0.5) * 80}vw`,
+              marginTop: `${(Math.random() - 0.5) * 80}vh`,
+            }}
           />
         ))}
       </div>
 
-      {/* THE GLITCH CORE INTERACTION */}
+      {/* MAIN CONTAINER: Implodes on Click */}
       <AnimatePresence>
         {!clicked && (
           <motion.div
-            exit={{ scale: 3, opacity: 0 }} // Removed heavy blur filter to stop lag
-            transition={{ duration: 0.3, ease: "easeIn" }}
-            style={{ willChange: "transform, opacity" }}
-            onClick={handleClick}
-            className={`relative z-20 flex flex-col items-center justify-center group ${!isReady ? 'pointer-events-none' : 'cursor-pointer'}`}
+            exit={{ scale: 0.01, opacity: 0, filter: "brightness(5) blur(20px)" }} // Cinematic Collapse
+            transition={{ duration: 0.7, ease: [0.87, 0, 0.13, 1] }} 
+            className="relative z-20 flex flex-col items-center justify-center w-full max-w-lg px-6"
           >
-            {/* Outer Rotating Ring */}
-            <motion.div 
-              animate={{
-                scale: [1, 1.1, 1],
-                rotate: [0, 90, 180, 270, 360],
-                borderColor: ["#00ffff", "#b026ff", "#00ffff"]
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "linear"
-              }}
-              className="absolute w-32 h-32 md:w-48 md:h-48 border-2 border-dashed rounded-full opacity-60 flex items-center justify-center pointer-events-none"
-            />
-            
-            {/* Inner Counter-Rotating Ring */}
-            <motion.div 
-              animate={{
-                scale: [1.1, 0.9, 1.1],
-                rotate: [360, 270, 180, 90, 0],
-                borderColor: ["#b026ff", "#00ffff", "#b026ff"]
-              }}
-              transition={{
-                duration: 5,
-                repeat: Infinity,
-                ease: "linear"
-              }}
-              className="absolute w-40 h-40 md:w-56 md:h-56 border border-solid rounded-full opacity-30 pointer-events-none"
-            />
 
-            {/* The Clickable Core Button */}
-            <div className={`
-              w-24 h-24 md:w-32 md:h-32 rounded-full bg-black/90 backdrop-blur-md border-2 flex items-center justify-center relative overflow-hidden transition-all duration-500
-              ${isReady 
-                ? 'border-neon-cyan shadow-[0_0_50px_rgba(0,243,255,0.8)] group-hover:scale-110 group-hover:bg-neon-cyan/20 group-hover:shadow-[0_0_80px_rgba(0,243,255,1)]' 
-                : 'border-red-500 shadow-[0_0_20px_rgba(255,0,0,0.5)] opacity-50'}
-            `}>
-              <span className={`font-mono font-bold tracking-widest text-center z-10 text-sm md:text-base ${isReady ? 'text-neon-cyan group-hover:text-white' : 'text-red-500'}`}>
-                {isReady ? "ENTER" : "LOCKED"}
-              </span>
+            {/* PREMIUM 3D WIREFRAME SPHERE */}
+            <div className="relative w-40 h-40 md:w-48 md:h-48 mb-16 flex items-center justify-center perspective-[1000px]">
               
-              {/* Optional: Add a subtle loading pulse behind the text when locked */}
-              {!isReady && (
-                <motion.div 
-                  animate={{ opacity: [0.1, 0.3, 0.1] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                  className="absolute inset-0 bg-red-500"
-                />
-              )}
+              {/* Outer Slow Ring */}
+              <motion.div 
+                animate={{ rotateZ: 360, rotateX: 20 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-0 border-[1px] border-white/5 rounded-full"
+              />
+              
+              {/* Middle dashed orbit */}
+              <motion.div 
+                animate={{ rotateZ: -360, rotateY: 45 }}
+                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-4 border-[1px] border-dashed border-neon-cyan/20 rounded-full"
+              />
+              
+              {/* Central Glowing Core Structure */}
+              <motion.div
+                animate={{ 
+                  rotateY: [0, 360], 
+                  rotateX: [0, 180] 
+                }}
+                transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+                className="w-16 h-16 md:w-20 md:h-20 border-[1px] border-neon-cyan/40 bg-neon-cyan/5 relative flex items-center justify-center shadow-[inset_0_0_20px_rgba(0,243,255,0.2)]"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                 <div className="absolute inset-0 border-[1px] border-neon-purple/40 transform rotate-45"></div>
+                 <div className="absolute inset-0 border-[1px] border-white/20 transform rotate-90"></div>
+                 {/* Intense inner light */}
+                 <div className="w-2 h-2 bg-white rounded-full shadow-[0_0_20px_#00ffff,0_0_40px_#b026ff]"></div>
+              </motion.div>
             </div>
-            
-            <motion.p 
-              animate={isReady ? { opacity: [0.5, 1, 0.5] } : {}}
-              transition={{ duration: 2, repeat: Infinity }}
-              className={`mt-12 md:mt-16 font-mono tracking-[0.2em] md:tracking-[0.3em] text-xs md:text-sm uppercase text-center px-4 ${isReady ? 'text-neon-cyan glitch-text' : 'text-gray-500'}`}
-              data-text={isReady ? "[ SYSTEM OVERRIDE READY - CLICK CORE ]" : "[ DECRYPTING MAINFRAME... ]"}
-            >
-              {isReady ? "[ SYSTEM OVERRIDE READY - CLICK CORE ]" : "[ DECRYPTING MAINFRAME... ]"}
-            </motion.p>
+
+            {/* PREMIUM TYPOGRAPHY LOADING AREA */}
+            <div className="w-full text-center flex flex-col items-center">
+              
+              {/* Tracked out loading text */}
+              <div className="w-full max-w-[320px] text-[10px] md:text-[11px] text-white/50 font-mono tracking-[0.3em] mb-4 uppercase h-[15px] flex justify-center">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={loadingText}
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -5 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {loadingText}
+                  </motion.span>
+                </AnimatePresence>
+              </div>
+
+              {/* Ultra Thin Progress Bar */}
+              <div className="w-full max-w-[280px] h-[1px] bg-white/10 relative overflow-hidden mb-12">
+                <motion.div 
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progress}%` }}
+                  transition={{ ease: "easeOut", duration: 0.3 }}
+                  className="absolute top-0 left-0 h-full bg-white shadow-[0_0_10px_#ffffff]"
+                />
+              </div>
+
+              {/* PREMIUM ENTER BUTTON */}
+              <motion.button
+                onClick={handleEnter}
+                disabled={!isReady}
+                animate={isReady ? { 
+                  opacity: 1, 
+                  y: 0,
+                  filter: "brightness(1) blur(0px)"
+                } : { 
+                  opacity: 0.2, 
+                  y: 10,
+                  filter: "brightness(0.5) blur(2px)"
+                }}
+                whileHover={isReady ? { 
+                  scale: 1.02, 
+                  backgroundColor: "rgba(255,255,255,0.03)",
+                  boxShadow: "0 0 30px rgba(0,243,255,0.15)"
+                } : {}}
+                whileTap={isReady ? { scale: 0.98 } : {}}
+                className={`
+                  relative px-12 py-4 border-[1px] rounded-sm font-sans tracking-[0.4em] text-xs md:text-sm uppercase transition-all duration-500 overflow-hidden group
+                  ${!isReady ? 'cursor-not-allowed border-white/5 text-transparent' : 'cursor-pointer border-neon-cyan/30 text-white backdrop-blur-md'}
+                `}
+              >
+                {/* Reveal sweep on hover */}
+                {isReady && (
+                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-neon-cyan/10 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out" />
+                )}
+
+                {/* Corner Accents */}
+                <span className="absolute top-0 left-0 w-2 h-[1px] bg-neon-cyan/80"></span>
+                <span className="absolute top-0 left-0 w-[1px] h-2 bg-neon-cyan/80"></span>
+                <span className="absolute bottom-0 right-0 w-2 h-[1px] bg-neon-cyan/80"></span>
+                <span className="absolute bottom-0 right-0 w-[1px] h-2 bg-neon-cyan/80"></span>
+                
+                <span className={`relative z-10 transition-colors duration-300 ${isReady ? 'group-hover:text-neon-cyan' : ''}`}>
+                  {isReady ? 'ENTER BRC' : `${progress}%`}
+                </span>
+              </motion.button>
+
+            </div>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* FLASH & SWEEP EXIT ANIMATION */}
+      <AnimatePresence>
+        {clicked && (
+          <>
+            {/* The bright implosion flash */}
+            <motion.div 
+               initial={{ opacity: 0 }}
+               animate={{ opacity: [0, 1, 0] }}
+               transition={{ duration: 0.4, times: [0, 0.5, 1], ease: "easeOut" }}
+               className="fixed inset-0 bg-white z-[150] pointer-events-none mix-blend-screen"
+            />
+            
+            {/* The sleek vault doors */}
+            <motion.div
+              initial={{ y: 0 }}
+              animate={{ y: "-100%" }}
+              transition={{ duration: 0.9, ease: [0.87, 0, 0.13, 1], delay: 0.4 }}
+              className="fixed top-0 left-0 w-full h-[50vh] bg-[#010203] z-[100] border-b-[1px] border-white/5"
+            />
+            <motion.div
+              initial={{ y: 0 }}
+              animate={{ y: "100%" }}
+              transition={{ duration: 0.9, ease: [0.87, 0, 0.13, 1], delay: 0.4 }}
+              className="fixed bottom-0 left-0 w-full h-[50vh] bg-[#010203] z-[100] border-t-[1px] border-white/5"
+            />
+          </>
         )}
       </AnimatePresence>
 

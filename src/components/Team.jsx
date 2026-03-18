@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 
-// --- TEAM DATA (7 Members) ---
+// --- TEAM DATA (Council Leadership) ---
 const team = [
   {
     name: "Aryan Sharma",
@@ -13,44 +13,9 @@ const team = [
   },
   {
     name: "Riya Patel",
-    role: "Tech Lead",
-    tags: ["SOLIDITY", "RUST"],
+    role: "Vice President",
+    tags: ["OPERATIONS", "EXECUTION"],
     image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1288&auto=format&fit=crop",
-    link: "#"
-  },
-  {
-    name: "David Chen",
-    role: "Events Lead",
-    tags: ["MANAGEMENT", "LOGISTICS"],
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1287&auto=format&fit=crop",
-    link: "#"
-  },
-  {
-    name: "Sarah Kim",
-    role: "Marketing Lead",
-    tags: ["BRANDING", "PR"],
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1364&auto=format&fit=crop",
-    link: "#"
-  },
-  {
-    name: "Arjun Verma",
-    role: "Content Lead",
-    tags: ["CREATIVE", "MEDIA"],
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1287&auto=format&fit=crop",
-    link: "#"
-  },
-  {
-    name: "Zara Khan",
-    role: "Socials Lead",
-    tags: ["COMMUNITY", "GROWTH"],
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1287&auto=format&fit=crop",
-    link: "#"
-  },
-  {
-    name: "Ishan Roy",
-    role: "Graphics Lead",
-    tags: ["DESIGN", "BLENDER"],
-    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1287&auto=format&fit=crop", // Replace with real photo
     link: "#"
   }
 ];
@@ -140,8 +105,7 @@ const Team = () => {
           </p>
         </div>
 
-        {/* TEAM GRID REPLACED WITH CENTERED FLEXBOX */}
-        {/* This ensures the 7th member is centered in the last row */}
+        {/* TEAM GRID */}
         <div className="flex flex-wrap justify-center gap-8">
           {team.map((member, i) => (
             <TeamCard key={i} member={member} index={i} />

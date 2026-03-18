@@ -55,8 +55,11 @@ const Hero = ({ onJoinClick }) => {
               <span className="block text-2xl md:text-3xl font-mono font-normal text-gray-400 mb-2 tracking-widest uppercase">
                 Welcome to
               </span>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-orange-500 to-yellow-400">
-                BLOCKCHAIN RBU
+              <span className="inline-flex flex-col">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-orange-500 to-yellow-400">
+                  BLOCKCHAIN RBU
+                </span>
+                <span className="hero-title-line" aria-hidden="true" />
               </span>
               <br />
               STUDENT CHAPTER
@@ -65,12 +68,6 @@ const Hero = ({ onJoinClick }) => {
             <p className="text-gray-400 text-lg md:text-xl font-light max-w-lg leading-relaxed mb-10">
               We are building the next generation of Blockchain innovators by empowering students through hands-on learning, real projects, and Web3 technologies.
             </p>
-
-            <div className="hero-brush-lines mb-10" aria-hidden="true">
-              <span className="hero-brush-line hero-brush-line-top" />
-              <span className="hero-brush-line hero-brush-line-mid" />
-              <span className="hero-brush-line hero-brush-line-bottom" />
-            </div>
 
             <div className="flex flex-col sm:flex-row gap-5 items-start sm:items-center">
               <MagneticWrapper>

@@ -38,9 +38,6 @@ const FAQ = () => {
 
       <div className="max-w-4xl mx-auto px-6 relative z-10">
         <div className="text-center mb-14">
-          <span className="inline-block font-mono text-xs tracking-[0.32em] text-orange-400 uppercase mb-4">
-            /// Answers for Members
-          </span>
           <h2 className="text-4xl md:text-5xl font-display font-bold tracking-tight text-white">
             STUDENT <span className="text-neon-cyan">FAQ</span>
           </h2>

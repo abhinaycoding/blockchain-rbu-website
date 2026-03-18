@@ -131,9 +131,6 @@ const Timeline = () => {
               <HackerText text="JOURNEY" delay={200} />
             </span>
           </h2>
-          <p className="text-gray-400 font-mono tracking-widest uppercase text-xs md:text-sm">
-            // Executing Roadmap V.1.0
-          </p>
         </div>
 
         {/* --- THE TIMELINE SPINE --- */}

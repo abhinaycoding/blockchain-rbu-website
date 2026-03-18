@@ -91,9 +91,6 @@ const Team = () => {
         {/* SECTION HEADER */}
         <div className="flex flex-col md:flex-row items-end justify-between gap-8 mb-24 border-b border-white/10 pb-8">
           <div>
-            <span className="block text-orange-500 font-mono text-xs tracking-[0.3em] mb-4">
-              /// EST. 2024
-            </span>
             <h2 className="text-6xl md:text-8xl font-bold tracking-tighter leading-none text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">
               MEET THE <br />
               <span className="text-white">COUNCIL</span>

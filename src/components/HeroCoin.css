@@ -51,7 +51,7 @@
 }
 
 /* The Animation */
-@@keyframes floatAndSpin {
+@keyframes floatAndSpin {
   0% {
     /* Only rotate Y (spin) and translate Y (float) */
     /* We let JS handle the X-axis tilt now */

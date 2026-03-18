@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Sphere, MeshDistortMaterial, Float, Environment } from '@react-three/drei';
+import { Sphere, MeshDistortMaterial, Float } from '@react-three/drei';
 
 const AnimatedSphere = () => {
   const sphereRef = useRef();
@@ -42,9 +42,6 @@ const CyberCore = () => {
         <ambientLight intensity={0.5} />
         <directionalLight position={[2, 5, 2]} intensity={1} />
         
-        {/* The Environment reflects city lights onto the object */}
-        <Environment preset="city" />
-
         {/* The 3D Object */}
         <AnimatedSphere />
       </Canvas>

@@ -83,7 +83,7 @@ const Preloader = ({ onComplete }) => {
       </motion.div>
 
       {/* CSS for Hollow Text */}
-      <style jsx>{`
+      <style>{`
         .stroke-text {
           -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
         }

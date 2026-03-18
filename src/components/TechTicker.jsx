@@ -48,7 +48,7 @@ const TechTicker = () => {
       </div>
 
       {/* CSS for the "Hollow" text effect */}
-      <style jsx>{`
+      <style>{`
         .stroke-text {
           -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
         }

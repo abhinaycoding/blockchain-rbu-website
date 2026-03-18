@@ -3,6 +3,7 @@ import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Zap, ArrowRight, Github, Twitter } from 'lucide-react';
 // import GlitchText from './GlitchText'; // Make sure this is imported if you use it, or HackerText
 import MagneticWrapper from './MagneticWrapper';
+import CryptoCoin3D from './CryptoCoin3D';
 import './HeroCoin.css'; 
 
 // 1. Accept the prop here
@@ -111,25 +112,7 @@ const Hero = ({ onJoinClick }) => {
             style={{ rotateX, rotateY }}
             className="relative w-full h-full flex items-center justify-center cursor-pointer pointer-events-auto"
           >
-            <div className="coin-spinner">
-              {[...Array(16)].map((_, i) => (
-                <div 
-                  key={i} 
-                  className="coin-layer" 
-                  style={{ 
-                    transform: `translateZ(${i}px)`,
-                    zIndex: i 
-                  }} 
-                >
-                  <img 
-                    src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" 
-                    alt="Bitcoin" 
-                    className="w-full h-full object-cover pointer-events-none"
-                  />
-                  {i === 15 && <div className="coin-shine" />}
-                </div>
-              ))}
-            </div>
+            <CryptoCoin3D />
           </motion.div>
         </div>
 

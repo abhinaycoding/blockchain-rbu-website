@@ -59,7 +59,7 @@ function ParallaxText({ children, baseVelocity = 100 }) {
       </motion.div>
       
       {/* CSS for the Outline Text */}
-      <style jsx>{`
+      <style>{`
         .stroke-text {
           -webkit-text-stroke: 2px rgba(255, 255, 255, 0.1);
           transition: all 0.3s ease;

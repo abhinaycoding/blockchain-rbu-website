@@ -62,15 +62,15 @@ const Hero = ({ onJoinClick }) => {
               STUDENT CHAPTER
             </h1>
 
-            <div className="hero-brush-lines mb-8" aria-hidden="true">
+            <p className="text-gray-400 text-lg md:text-xl font-light max-w-lg leading-relaxed mb-10">
+              We are building the next generation of Blockchain innovators by empowering students through hands-on learning, real projects, and Web3 technologies.
+            </p>
+
+            <div className="hero-brush-lines mb-10" aria-hidden="true">
               <span className="hero-brush-line hero-brush-line-top" />
               <span className="hero-brush-line hero-brush-line-mid" />
               <span className="hero-brush-line hero-brush-line-bottom" />
             </div>
-
-            <p className="text-gray-400 text-lg md:text-xl font-light max-w-lg leading-relaxed mb-10">
-              We are building the next generation of Blockchain innovators by empowering students through hands-on learning, real projects, and Web3 technologies.
-            </p>
 
             <div className="flex flex-col sm:flex-row gap-5 items-start sm:items-center">
               <MagneticWrapper>

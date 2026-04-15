@@ -14,7 +14,7 @@ const Events = () => {
       date: "Oct 15, 2025",
       loc: "Seminar Hall 2",
       desc: "An introduction to Smart Contracts and Solidity for beginners.",
-      status: "Upcoming",
+      status: "Closed",
       link: "https://docs.google.com/forms/" // Replace with real link
     },
     {
@@ -23,7 +23,7 @@ const Events = () => {
       date: "Nov 02, 2025",
       loc: "Innovation Lab",
       desc: "24-hour coding competition to build decentralized apps.",
-      status: "Registration Open",
+      status: "Closed",
       link: "https://docs.google.com/forms/" // Replace with real link
     },
     {
@@ -32,7 +32,7 @@ const Events = () => {
       date: "Nov 20, 2025",
       loc: "Main Auditorium",
       desc: "Expert talk on the future of Decentralized Finance.",
-      status: "Upcoming",
+      status: "Closed",
       link: "https://docs.google.com/forms/" // Replace with real link
     }
   ];
@@ -59,7 +59,7 @@ const Events = () => {
                 <div className="glass rounded-2xl overflow-hidden hover:shadow-[0_0_20px_rgba(0,255,157,0.1)] transition-all group">
                   <div className="bg-white/5 p-6 border-b border-white/5">
                     <div className="flex justify-between items-start">
-                       <span className="px-3 py-1 rounded-full text-xs font-bold uppercase bg-neon-green/10 text-neon-green">
+                       <span className="px-3 py-1 rounded-full text-xs font-bold uppercase bg-white/10 text-gray-400">
                          {ev.status}
                        </span>
                        <Calendar className="text-gray-500 group-hover:text-white transition-colors" size={20} />
@@ -74,18 +74,11 @@ const Events = () => {
                       <div className="flex items-center gap-3"><MapPin size={16} /> <span>{ev.loc}</span></div>
                     </div>
 
-                    <a 
-                      href={ev.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group relative w-full py-3.5 rounded-xl font-bold text-sm uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-3 overflow-hidden border border-orange-500/30 text-orange-400 hover:border-orange-500 hover:bg-orange-500 hover:text-black shadow-[0_0_15px_rgba(249,115,22,0.1)] hover:shadow-[0_0_25px_rgba(249,115,22,0.6)]"
+                    <div 
+                      className="relative w-full py-3.5 rounded-xl font-bold text-sm uppercase tracking-widest flex items-center justify-center gap-3 border border-white/5 text-gray-600 bg-white/5 cursor-not-allowed"
                     >
-                      {/* Shine effect that sweeps across on hover */}
-                      <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent group-hover:animate-shimmer" />
-                      
-                      <span className="relative z-10 transition-transform duration-300 group-hover:scale-105">Register via Google Forms</span>
-                      <ExternalLink size={16} className="relative z-10 opacity-70 group-hover:opacity-100 transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1" />
-                    </a>
+                      <span className="relative z-10">Registration Closed</span>
+                    </div>
                   </div>
                 </div>
               </ScrollReveal>

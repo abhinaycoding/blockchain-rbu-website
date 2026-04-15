@@ -1,4 +1,4 @@
-import React, { useRef, useMemo, useEffect, useState } from 'react';
+import React, { useRef, useMemo, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { 
   MeshTransmissionMaterial, 
@@ -59,7 +59,7 @@ function EthereumModel() {
               distortion={0.2} distortionScale={0.5} temporalDistortion={0.1}
               color="#c5d1ff" clearcoat={1} clearcoatRoughness={0} roughness={0}
               attenuationDistance={3} attenuationColor="#ffffff"
-              resolution={128} samples={4}
+              resolution={256} samples={6}
             />
           </mesh>
 
@@ -71,7 +71,7 @@ function EthereumModel() {
               distortion={0.2} distortionScale={0.5} temporalDistortion={0.1}
               color="#a4b4ff" clearcoat={1} clearcoatRoughness={0} roughness={0}
               attenuationDistance={3} attenuationColor="#ffffff"
-              resolution={128} samples={4}
+              resolution={256} samples={6}
             />
           </mesh>
 
@@ -97,75 +97,19 @@ function EthereumModel() {
         </group>
       </Float>
 
-      <Sparkles count={40} scale={4} size={3} color="#a4b4ff" opacity={0.6} speed={0.5} />
-      <ContactShadows position={[0, -1.8, 0]} opacity={0.8} scale={7} blur={2.5} far={3} color="#000000" frames={1} resolution={256} />
+      <Sparkles count={60} scale={4} size={3} color="#a4b4ff" opacity={0.6} speed={0.5} />
+      <ContactShadows position={[0, -1.8, 0]} opacity={0.8} scale={7} blur={2.5} far={3} color="#000000" frames={1} resolution={512} />
     </group>
   );
 }
 
-// Pure CSS fallback — zero GPU rendering cost on mobile
-function MobileCrystal() {
-  return (
-    <div className="relative w-[240px] h-[240px] flex items-center justify-center">
-      <div className="absolute inset-0 rounded-full bg-indigo-500/10 blur-[60px]" />
-      <div className="relative w-[150px] h-[150px] flex items-center justify-center">
-        {/* Top triangle */}
-        <div className="absolute top-[8px] left-1/2 -translate-x-1/2 w-0 h-0"
-          style={{
-            borderLeft: '66px solid transparent',
-            borderRight: '66px solid transparent',
-            borderBottom: '92px solid rgba(165,180,252,0.28)',
-            filter: 'drop-shadow(0 0 18px rgba(99,102,241,0.7))'
-          }}
-        />
-        {/* Bottom triangle */}
-        <div className="absolute bottom-[8px] left-1/2 -translate-x-1/2 w-0 h-0"
-          style={{
-            borderLeft: '66px solid transparent',
-            borderRight: '66px solid transparent',
-            borderTop: '92px solid rgba(129,140,248,0.22)',
-            filter: 'drop-shadow(0 0 18px rgba(79,70,229,0.6))'
-          }}
-        />
-        <div className="absolute w-7 h-7 rounded-full bg-indigo-400/70 blur-[8px]" />
-      </div>
-      {/* Slowly rotating ring */}
-      <div
-        className="absolute w-[210px] h-[210px] rounded-full border border-indigo-400/20"
-        style={{ animation: 'spin 14s linear infinite' }}
-      />
-    </div>
-  );
-}
-
+// Desktop-only 3D canvas — Hero.jsx ensures this is never mounted on mobile
 const CryptoCoin3D = () => {
-  const [isMobile, setIsMobile] = useState(() => {
-    // SSR-safe: default false, update in effect
-    return false;
-  });
-
-  useEffect(() => {
-    const check = () => {
-      setIsMobile(window.innerWidth < 1024 || 'ontouchstart' in window);
-    };
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
-  }, []);
-
-  if (isMobile) {
-    return (
-      <div className="w-full h-full max-w-[460px] max-h-[460px] flex items-center justify-center">
-        <MobileCrystal />
-      </div>
-    );
-  }
-
   return (
     <div className="w-full h-full max-w-[460px] max-h-[460px]">
       <Canvas
         camera={{ position: [0, 0, 5.2], fov: 28 }}
-        dpr={[1, 1.5]}
+        dpr={[1, 2]}
         gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.2 }}
       >
         <StudioEnvironment />

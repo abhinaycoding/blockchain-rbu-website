@@ -1,9 +1,62 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Zap, ArrowRight } from 'lucide-react';
+import { Zap } from 'lucide-react';
 import MagneticWrapper from './MagneticWrapper';
 import CryptoCoin3D from './CryptoCoin3D';
 import './HeroCoin.css'; 
+
+// Static Ethereum diamond — pure CSS, zero GPU cost, sits behind hero text on mobile
+function StaticEthBg() {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center z-0 pointer-events-none overflow-hidden">
+      {/* Outer ambient glow */}
+      <div className="absolute w-[320px] h-[320px] rounded-full bg-indigo-600/15 blur-[80px]" />
+
+      {/* Ethereum diamond shape */}
+      <div className="relative flex items-center justify-center opacity-25">
+        {/* Top triangle */}
+        <div
+          style={{
+            width: 0,
+            height: 0,
+            borderLeft: '90px solid transparent',
+            borderRight: '90px solid transparent',
+            borderBottom: '130px solid rgba(165,180,252,0.6)',
+            position: 'absolute',
+            top: -65,
+            filter: 'drop-shadow(0 0 30px rgba(99,102,241,0.8))',
+          }}
+        />
+        {/* Bottom triangle */}
+        <div
+          style={{
+            width: 0,
+            height: 0,
+            borderLeft: '90px solid transparent',
+            borderRight: '90px solid transparent',
+            borderTop: '130px solid rgba(129,140,248,0.5)',
+            position: 'absolute',
+            bottom: -65,
+            filter: 'drop-shadow(0 0 30px rgba(79,70,229,0.7))',
+          }}
+        />
+        {/* Center glow */}
+        <div className="w-10 h-10 rounded-full bg-indigo-400 blur-[12px] opacity-80" />
+      </div>
+
+      {/* Slowly rotating outer ring */}
+      <div
+        className="absolute w-[280px] h-[280px] rounded-full border border-indigo-400/15"
+        style={{ animation: 'spin 18s linear infinite' }}
+      />
+      {/* Counter-rotating inner ring */}
+      <div
+        className="absolute w-[200px] h-[200px] rounded-full border border-indigo-300/10"
+        style={{ animation: 'spin 12s linear infinite reverse' }}
+      />
+    </div>
+  );
+}
 
 const Hero = ({ onJoinClick }) => {
   return (
@@ -14,16 +67,20 @@ const Hero = ({ onJoinClick }) => {
       <div className="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-blue-600/5 rounded-full blur-[100px]" />
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-20" />
 
+      {/* MOBILE ONLY: Static Ethereum background (shown only below lg breakpoint) */}
+      <div className="lg:hidden">
+        <StaticEthBg />
+      </div>
+
       <div className="relative max-w-7xl mx-auto px-6 w-full flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 pt-20 lg:items-center">
         
-        {/* LEFT SIDE: Content */}
-        <div className="relative z-20 w-full lg:w-auto mt-4 lg:mt-0 order-1">
+        {/* LEFT SIDE: Content — always on top of the static bg on mobile */}
+        <div className="relative z-10 w-full lg:w-auto mt-4 lg:mt-0 order-1">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            {/* Headline */}
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tighter mb-8 mix-blend-screen">
               <span className="block text-2xl md:text-3xl font-mono font-normal text-gray-400 mb-2 tracking-widest uppercase">
                 Welcome to
@@ -58,13 +115,9 @@ const Hero = ({ onJoinClick }) => {
           </motion.div>
         </div>
 
-        {/* RIGHT SIDE / MOBILE BACKGROUND: 3D COIN (Physics handled entirely natively inside CryptoCoin3D) */}
-        <div 
-          className="absolute inset-0 top-20 lg:top-auto lg:relative lg:flex lg:order-2 lg:w-full lg:h-[600px] items-center justify-center perspective-container z-0 pointer-events-none lg:pointer-events-auto opacity-40 lg:opacity-100"
-        >
-          <div className="w-full h-full flex items-center justify-center">
-            <CryptoCoin3D />
-          </div>
+        {/* DESKTOP ONLY: Full 3D interactive model (hidden on mobile) */}
+        <div className="hidden lg:flex lg:order-2 lg:w-full lg:h-[600px] items-center justify-center z-0">
+          <CryptoCoin3D />
         </div>
 
       </div>

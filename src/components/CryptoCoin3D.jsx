@@ -49,29 +49,29 @@ function EthereumModel() {
 
   return (
     <group ref={modelRef} scale={1.17}>
-      <Float speed={1.5} rotationIntensity={0.4} floatIntensity={1.2}>
+      <Float speed={1.2} rotationIntensity={0.3} floatIntensity={0.8}>
         <group>
           <mesh position={[0, 0.58, 0]}>
             <coneGeometry args={[0.68, 1.2, 4]} />
             <MeshTransmissionMaterial 
-              backside={true} backsideThickness={2} thickness={1.5}
-              ior={2.4} chromaticAberration={1.2} anisotropy={0.5}
-              distortion={0.2} distortionScale={0.5} temporalDistortion={0.1}
+              backside={false} thickness={0.8}
+              ior={1.8} chromaticAberration={0.5} anisotropy={0.3}
+              distortion={0.1} distortionScale={0.3} temporalDistortion={0.05}
               color="#c5d1ff" clearcoat={1} clearcoatRoughness={0} roughness={0}
-              attenuationDistance={3} attenuationColor="#ffffff"
-              resolution={256} samples={6}
+              attenuationDistance={4} attenuationColor="#ffffff"
+              resolution={128} samples={2}
             />
           </mesh>
 
           <mesh position={[0, -0.58, 0]} rotation-z={Math.PI}>
             <coneGeometry args={[0.68, 1.2, 4]} />
             <MeshTransmissionMaterial 
-              backside={true} backsideThickness={2} thickness={1.5}
-              ior={2.4} chromaticAberration={1.2} anisotropy={0.5}
-              distortion={0.2} distortionScale={0.5} temporalDistortion={0.1}
+              backside={false} thickness={0.8}
+              ior={1.8} chromaticAberration={0.5} anisotropy={0.3}
+              distortion={0.1} distortionScale={0.3} temporalDistortion={0.05}
               color="#a4b4ff" clearcoat={1} clearcoatRoughness={0} roughness={0}
-              attenuationDistance={3} attenuationColor="#ffffff"
-              resolution={256} samples={6}
+              attenuationDistance={4} attenuationColor="#ffffff"
+              resolution={128} samples={2}
             />
           </mesh>
 
@@ -97,7 +97,7 @@ function EthereumModel() {
         </group>
       </Float>
 
-      <Sparkles count={60} scale={4} size={3} color="#a4b4ff" opacity={0.6} speed={0.5} />
+      <Sparkles count={30} scale={4} size={2.5} color="#a4b4ff" opacity={0.5} speed={0.4} />
       <ContactShadows position={[0, -1.8, 0]} opacity={0.8} scale={7} blur={2.5} far={3} color="#000000" frames={1} resolution={512} />
     </group>
   );

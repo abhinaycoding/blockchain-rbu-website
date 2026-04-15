@@ -9,11 +9,10 @@ import About from './components/About';
 import Perks from './components/Perks';
 import Timeline from './components/Timeline';
 import Events from './components/Events';
-import Team from './components/Team';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import NoiseOverlay from './components/NoiseOverlay';
-import Preloader from './components/Preloader'; 
+import Preloader from './components/SplashScreen'; 
 import Cooking from './components/Cooking'; // <--- 1. IMPORT THIS
 import Resources from './components/Resources';
 import ParticlesBackground from './components/ParticlesBackground';
@@ -89,7 +88,6 @@ function App() {
         <Perks />
         <Timeline />
         <Events />
-        <Team />
         <FAQ />
       </main>
 

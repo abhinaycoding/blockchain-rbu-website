@@ -1,32 +1,13 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useRef, useMemo, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { 
+  MeshTransmissionMaterial, 
+  ContactShadows, 
+  Sparkles,
+  Float
+} from '@react-three/drei';
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
-
-const crystalMaterialProps = {
-  color: '#c5d1ff',
-  roughness: 0.1,
-  metalness: 0.02,
-  transmission: 0.78,
-  thickness: 1.1,
-  ior: 1.45,
-  clearcoat: 1,
-  clearcoatRoughness: 0.05,
-  iridescence: 0.28,
-  iridescenceIOR: 1.2,
-  iridescenceThicknessRange: [120, 350],
-  reflectivity: 1,
-  transparent: true,
-  opacity: 0.96,
-};
-
-const coreMaterialProps = {
-  color: '#95a7ff',
-  roughness: 0.18,
-  metalness: 0.15,
-  emissive: '#4f46e5',
-  emissiveIntensity: 0.35,
-};
 
 function StudioEnvironment() {
   const { gl, scene } = useThree();
@@ -59,49 +40,123 @@ function StudioEnvironment() {
 function EthereumModel() {
   const modelRef = useRef(null);
 
-  useFrame((renderState, delta) => {
-    if (!modelRef.current) return;
-    modelRef.current.rotation.y += delta * 0.32;
-    modelRef.current.rotation.x = Math.sin(renderState.clock.elapsedTime * 0.55) * 0.05;
-    modelRef.current.position.y = Math.sin(renderState.clock.elapsedTime * 0.9) * 0.08;
+  useFrame((state, delta) => {
+    if (modelRef.current) {
+      // Base continuous spinning - perfectly smooth based on time delta
+      modelRef.current.rotation.y += delta * 0.15;
+      
+      // Interactive Mouse Tracking limits
+      const targetX = state.pointer.x * 0.6;
+      const targetY = state.pointer.y * 0.6;
+      
+      // Frame-rate independent spring physics utilizing MathUtils.damp
+      // Format: damp(current, target, lambda (speed), delta)
+      modelRef.current.rotation.x = THREE.MathUtils.damp(modelRef.current.rotation.x, targetY, 3, delta);
+      modelRef.current.rotation.z = THREE.MathUtils.damp(modelRef.current.rotation.z, -targetX, 3, delta);
+    }
   });
 
   return (
     <group ref={modelRef} scale={1.17}>
-      <mesh position={[0, 0.58, 0]} castShadow receiveShadow>
-        <coneGeometry args={[0.68, 1.2, 4]} />
-        <meshPhysicalMaterial {...crystalMaterialProps} flatShading />
-      </mesh>
+      <Float speed={1.5} rotationIntensity={0.4} floatIntensity={1.2}>
+        <group>
+          {/* Top Crystal */}
+          <mesh position={[0, 0.58, 0]}>
+            <coneGeometry args={[0.68, 1.2, 4]} />
+            <MeshTransmissionMaterial 
+              backside={true}
+              backsideThickness={2}
+              thickness={1.5}
+              ior={2.4} // Diamond-level refraction
+              chromaticAberration={1.2} // High rainbow dispersion
+              anisotropy={0.5}
+              distortion={0.2} 
+              distortionScale={0.5}
+              temporalDistortion={0.1}
+              color="#c5d1ff"
+              clearcoat={1}
+              clearcoatRoughness={0}
+              roughness={0}
+              attenuationDistance={3}
+              attenuationColor="#ffffff"
+            />
+          </mesh>
 
-      <mesh position={[0, -0.58, 0]} rotation-z={Math.PI} castShadow receiveShadow>
-        <coneGeometry args={[0.68, 1.2, 4]} />
-        <meshPhysicalMaterial {...crystalMaterialProps} color="#a4b4ff" flatShading />
-      </mesh>
+          {/* Bottom Crystal */}
+          <mesh position={[0, -0.58, 0]} rotation-z={Math.PI}>
+            <coneGeometry args={[0.68, 1.2, 4]} />
+            <MeshTransmissionMaterial 
+              backside={true}
+              backsideThickness={2}
+              thickness={1.5}
+              ior={2.4}
+              chromaticAberration={1.2}
+              anisotropy={0.5}
+              distortion={0.2}
+              distortionScale={0.5}
+              temporalDistortion={0.1}
+              color="#a4b4ff"
+              clearcoat={1}
+              clearcoatRoughness={0}
+              roughness={0}
+              attenuationDistance={3}
+              attenuationColor="#ffffff"
+            />
+          </mesh>
 
-      <mesh position={[0, 0.17, 0]} scale={[0.9, 0.64, 0.9]} castShadow receiveShadow>
-        <coneGeometry args={[0.5, 0.74, 4]} />
-        <meshStandardMaterial {...coreMaterialProps} flatShading />
-      </mesh>
+          {/* Inner Core Top */}
+          <mesh position={[0, 0.17, 0]} scale={[0.9, 0.64, 0.9]}>
+            <coneGeometry args={[0.5, 0.74, 4]} />
+            <meshStandardMaterial 
+              color="#ffffff" 
+              emissive="#4f46e5" 
+              emissiveIntensity={3} 
+              toneMapped={false} 
+            />
+          </mesh>
 
-      <mesh position={[0, -0.17, 0]} rotation-z={Math.PI} scale={[0.9, 0.64, 0.9]} castShadow receiveShadow>
-        <coneGeometry args={[0.5, 0.74, 4]} />
-        <meshStandardMaterial {...coreMaterialProps} color="#869bff" emissive="#4338ca" flatShading />
-      </mesh>
+          {/* Inner Core Bottom */}
+          <mesh position={[0, -0.17, 0]} rotation-z={Math.PI} scale={[0.9, 0.64, 0.9]}>
+            <coneGeometry args={[0.5, 0.74, 4]} />
+            <meshStandardMaterial 
+              color="#ffffff" 
+              emissive="#4338ca" 
+              emissiveIntensity={3} 
+              toneMapped={false} 
+            />
+          </mesh>
 
-      <mesh rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[0.93, 0.018, 20, 120]} />
-        <meshStandardMaterial color="#f5f8ff" metalness={0.7} roughness={0.25} emissive="#7c8cff" emissiveIntensity={0.1} />
-      </mesh>
+          {/* Outer Ring */}
+          <mesh rotation={[Math.PI / 2, 0, 0]}>
+            <torusGeometry args={[0.93, 0.018, 50, 200]} />
+            <meshStandardMaterial 
+              color="#ffffff" 
+              metalness={1} 
+              roughness={0.05} 
+              envMapIntensity={3}
+            />
+          </mesh>
+          
+          {/* Faint Wireframe Outline */}
+          <mesh scale={1.03}>
+            <octahedronGeometry args={[1.05, 0]} />
+            <meshBasicMaterial color="#c7d2fe" wireframe transparent opacity={0.1} />
+          </mesh>
+        </group>
+      </Float>
 
-      <mesh scale={1.03}>
-        <octahedronGeometry args={[1.05, 0]} />
-        <meshBasicMaterial color="#c7d2fe" wireframe transparent opacity={0.09} />
-      </mesh>
-
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.35, 0]} receiveShadow>
-        <circleGeometry args={[1.45, 64]} />
-        <shadowMaterial transparent opacity={0.2} />
-      </mesh>
+      {/* Floating Sparkles around the model */}
+      <Sparkles count={80} scale={4} size={3} color="#a4b4ff" opacity={0.6} speed={0.5} />
+      
+      {/* Super realistic contact shadows */}
+      <ContactShadows 
+        position={[0, -1.8, 0]} 
+        opacity={0.8} 
+        scale={7} 
+        blur={2.5} 
+        far={3}
+        color="#000000"
+      />
     </group>
   );
 }
@@ -112,22 +167,20 @@ const CryptoCoin3D = () => {
       <Canvas
         camera={{ position: [0, 0, 5.2], fov: 28 }}
         dpr={[1, 2]}
-        shadows
-        gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.1 }}
+        gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.2 }}
       >
         <StudioEnvironment />
-        <ambientLight intensity={0.38} />
+        
+        <ambientLight intensity={0.6} />
         <directionalLight
           position={[3.5, 4, 3.2]}
-          intensity={1.45}
+          intensity={2}
           color="#ffffff"
-          castShadow
-          shadow-mapSize-width={1024}
-          shadow-mapSize-height={1024}
-          shadow-bias={-0.0001}
         />
-        <pointLight position={[-3, -2.5, 2]} intensity={0.7} color="#5b6dff" />
-        <pointLight position={[0, -3, -1.8]} intensity={0.35} color="#1e293b" />
+        {/* Stronger backlighting for glass reflections */}
+        <pointLight position={[-3, -2.5, 2]} intensity={3} color="#5b6dff" />
+        <pointLight position={[3, 2, -3]} intensity={2} color="#00f3ff" />
+        
         <EthereumModel />
       </Canvas>
     </div>

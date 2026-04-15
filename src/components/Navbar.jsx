@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, ExternalLink, Menu, X, Home, Info, Calendar, Users } from 'lucide-react';
+import { MessageCircle, ExternalLink, Menu, X, Home, Info, Calendar } from 'lucide-react';
 import HackerText from './HackerText';
 import logo from '../assets/logo.jpg';
 
@@ -28,7 +28,6 @@ const Navbar = () => {
     { name: 'HOME', id: 'home', icon: Home },
     { name: 'ABOUT', id: 'about', icon: Info },
     { name: 'EVENTS', id: 'events', icon: Calendar },
-    { name: 'TEAM', id: 'team', icon: Users },
   ];
 
   // Determine if the island should be expanded (not scrolled, OR hovered while scrolled)

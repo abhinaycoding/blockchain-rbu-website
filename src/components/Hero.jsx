@@ -1,38 +1,11 @@
-import React, { useRef } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { Zap, ArrowRight, Github, Twitter } from 'lucide-react';
-// import GlitchText from './GlitchText'; // Make sure this is imported if you use it, or HackerText
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Zap, ArrowRight } from 'lucide-react';
 import MagneticWrapper from './MagneticWrapper';
 import CryptoCoin3D from './CryptoCoin3D';
 import './HeroCoin.css'; 
 
-// 1. Accept the prop here
 const Hero = ({ onJoinClick }) => {
-  // --- MAGNETIC PHYSICS LOGIC ---
-  const ref = useRef(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const mouseX = useSpring(x, { stiffness: 150, damping: 15, mass: 0.1 });
-  const mouseY = useSpring(y, { stiffness: 150, damping: 15, mass: 0.1 });
-  const rotateX = useTransform(mouseY, [-0.5, 0.5], ["15deg", "-15deg"]);
-  const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-15deg", "15deg"]);
-
-  const handleMouseMove = (e) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseXFromCenter = e.clientX - rect.left - width / 2;
-    const mouseYFromCenter = e.clientY - rect.top - height / 2;
-    x.set(mouseXFromCenter / width);
-    y.set(mouseYFromCenter / height);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
   return (
     <section className="relative min-h-screen flex items-center bg-transparent text-white overflow-hidden selection:bg-orange-500/30">
       
@@ -81,31 +54,17 @@ const Hero = ({ onJoinClick }) => {
                   </span>
                 </button>
               </MagneticWrapper>
-
-              <div className="flex gap-4">
-                {[Github, Twitter].map((Icon, i) => (
-                  <a key={i} href="#" className="p-3 border border-white/10 rounded-full hover:bg-white hover:text-black transition-all hover:scale-110">
-                    <Icon size={20} />
-                  </a>
-                ))}
-              </div>
             </div>
           </motion.div>
         </div>
 
-        {/* RIGHT SIDE: MAGNETIC 3D COIN */}
+        {/* RIGHT SIDE / MOBILE BACKGROUND: 3D COIN (Physics handled entirely natively inside CryptoCoin3D) */}
         <div 
-          className="hidden lg:flex lg:order-2 lg:w-full lg:h-[600px] items-center justify-center perspective-container z-0 ml-auto lg:ml-0 mt-8 lg:mt-0 pointer-events-auto"
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          ref={ref}
+          className="absolute inset-0 top-20 lg:top-auto lg:relative lg:flex lg:order-2 lg:w-full lg:h-[600px] items-center justify-center perspective-container z-0 pointer-events-none lg:pointer-events-auto opacity-40 lg:opacity-100"
         >
-          <motion.div 
-            style={{ rotateX, rotateY }}
-            className="relative w-full h-full flex items-center justify-center cursor-pointer pointer-events-auto"
-          >
+          <div className="w-full h-full flex items-center justify-center">
             <CryptoCoin3D />
-          </motion.div>
+          </div>
         </div>
 
       </div>

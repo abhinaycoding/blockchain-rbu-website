@@ -1,5 +1,5 @@
 import React from 'react';
-import { Twitter, Instagram, Linkedin, Github, Mail, Heart } from 'lucide-react';
+import { Instagram, Linkedin, Mail, Heart } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -21,9 +21,7 @@ const Footer = () => {
              {/* Social Icons with Hover Glow */}
              {[
                { icon: <Instagram size={20} />, href: "https://www.instagram.com/blockchain_rbu" },
-               { icon: <Linkedin size={20} />, href: "#" },
-               { icon: <Twitter size={20} />, href: "#" },
-               { icon: <Github size={20} />, href: "#" }
+               { icon: <Linkedin size={20} />, href: "#" }
              ].map((social, i) => (
                <a 
                  key={i} 
@@ -40,7 +38,7 @@ const Footer = () => {
         <div>
           <h3 className="font-bold text-white mb-6 uppercase tracking-widest text-xs">Platform</h3>
           <ul className="space-y-4 font-mono text-sm text-gray-400">
-            {['Home', 'About Us', 'Events', 'Projects', 'Team'].map((item) => (
+            {['Home', 'About Us', 'Events', 'Projects'].map((item) => (
               <li key={item}>
                 <a href={`#${item.toLowerCase().split(' ')[0]}`} className="hover:text-neon-cyan transition-colors flex items-center gap-2 group">
                   <span className="w-0 group-hover:w-2 h-[1px] bg-neon-cyan transition-all duration-300" />

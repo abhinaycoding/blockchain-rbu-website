@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Zap } from 'lucide-react';
 import MagneticWrapper from './MagneticWrapper';
 import CryptoCoin3D from './CryptoCoin3D';
-import logo from '../assets/logo.jpg';
+import logo from '../assets/logo-icon.png';
 import './HeroCoin.css'; 
 
 // Logo as mobile background — mix-blend-mode:screen makes the black bg transparent
@@ -16,12 +16,11 @@ function LogoBg() {
         alt=""
         aria-hidden="true"
         style={{
-          width: '340px',
-          height: '340px',
+          width: '320px',
+          height: '320px',
           objectFit: 'contain',
-          objectPosition: 'top',  // crop to just the icon, hide the text below
           mixBlendMode: 'screen',
-          opacity: 0.22,
+          opacity: 0.28,
           userSelect: 'none',
         }}
       />

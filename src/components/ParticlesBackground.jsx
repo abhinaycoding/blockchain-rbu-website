@@ -9,6 +9,7 @@ const ParticlesBackground = () => {
     const ctx = canvas.getContext('2d', { alpha: true });
     let animationFrameId;
     let frameCount = 0;
+    const isMobile = window.innerWidth < 1024 || 'ontouchstart' in window;
 
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -25,11 +26,16 @@ const ParticlesBackground = () => {
       mouse.current.x = null;
       mouse.current.y = null;
     };
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    window.addEventListener('mouseout', handleMouseOut, { passive: true });
+    // Skip mouse tracking on touch devices — unnecessary cost
+    if (!isMobile) {
+      window.addEventListener('mousemove', handleMouseMove, { passive: true });
+      window.addEventListener('mouseout', handleMouseOut, { passive: true });
+    }
 
-    // Capped at 80 particles max — was /15000, now strictly limited
-    const particleCount = Math.min(Math.floor((canvas.width * canvas.height) / 25000), 80);
+    // Much fewer particles on mobile
+    const particleCount = isMobile
+      ? Math.min(Math.floor((canvas.width * canvas.height) / 80000), 25)
+      : Math.min(Math.floor((canvas.width * canvas.height) / 25000), 80);
     const particles = [];
 
     class Particle {
@@ -77,6 +83,11 @@ const ParticlesBackground = () => {
 
     const animate = () => {
       frameCount++;
+      animationFrameId = requestAnimationFrame(animate);
+
+      // Throttle to 30fps on mobile by skipping every other frame
+      if (isMobile && frameCount % 2 !== 0) return;
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       for (let i = 0; i < particles.length; i++) {

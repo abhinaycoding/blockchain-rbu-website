@@ -23,8 +23,10 @@ function App() {
   const [currentView, setCurrentView] = useState('home'); // <--- 2. ADD VIEW STATE
 
   useEffect(() => {
-    // Only initialize Lenis on non-touch or large devices if desired, 
-    // but default config with smoothTouch: false usually works IF CSS is correct.
+    // Native scroll on mobile is smoother and requires zero JS overhead
+    const isMobile = window.innerWidth < 1024 || 'ontouchstart' in window;
+    if (isMobile) return;
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -71,7 +73,7 @@ function App() {
 
       {/* GLOBAL OVERLAYS */}
       <CyberBackground />
-      <ParticlesBackground />
+      {!('ontouchstart' in window) && <ParticlesBackground />}
       <NoiseOverlay />
       
       {/* MAIN SECTIONS */}

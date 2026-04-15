@@ -73,7 +73,6 @@ function App() {
 
       {/* GLOBAL OVERLAYS */}
       <CyberBackground />
-      {!('ontouchstart' in window) && <ParticlesBackground />}
       <NoiseOverlay />
       
       {/* MAIN SECTIONS */}

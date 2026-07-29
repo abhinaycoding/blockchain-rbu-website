@@ -90,7 +90,7 @@ const Hero = ({ onJoinClick }) => {
                   </span>
                 </button>
               </MagneticWrapper>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
 

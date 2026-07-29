@@ -21,13 +21,6 @@ body {
    effects on touch/small screens
    ========================================= */
 @media (max-width: 1023px) {
-  /* Stop ALL CSS animations and transitions */
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-
   /* Kill all blur filters — biggest GPU drain on mobile */
   [class*="blur"],
   [class*="backdrop-blur"] {

@@ -47,11 +47,16 @@ const Hero = ({ onJoinClick }) => {
         {/* LEFT SIDE: Content — always on top of the static bg on mobile */}
         <div className="relative z-10 w-full lg:w-auto mt-4 lg:mt-0 order-1">
           <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
+            }}
           >
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tighter mb-8">
+            <motion.h1 
+              variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } }}
+              className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tighter mb-8">
               <span className="block text-2xl md:text-3xl font-mono font-normal text-gray-400 mb-2 tracking-widest uppercase">
                 Welcome to
               </span>
@@ -63,13 +68,17 @@ const Hero = ({ onJoinClick }) => {
               </span>
               <br />
               STUDENT CHAPTER
-            </h1>
+            </motion.h1>
 
-            <p className="text-gray-400 text-lg md:text-xl font-light max-w-lg leading-relaxed mb-10">
+            <motion.p 
+              variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } }}
+              className="text-gray-400 text-lg md:text-xl font-light max-w-lg leading-relaxed mb-10">
               We are building the next generation of Blockchain innovators by empowering students through hands-on learning, real projects, and Web3 technologies.
-            </p>
+            </motion.p>
 
-            <div className="flex flex-col sm:flex-row gap-5 items-start sm:items-center">
+            <motion.div 
+              variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } }}
+              className="flex flex-col sm:flex-row gap-5 items-start sm:items-center">
               <MagneticWrapper>
                 <button 
                   onClick={onJoinClick}

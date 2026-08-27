@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Lenis from 'lenis';
-import { AnimatePresence } from 'framer-motion'; 
+import { motion, AnimatePresence } from 'framer-motion';
 
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -12,7 +12,7 @@ import Events from './components/Events';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import NoiseOverlay from './components/NoiseOverlay';
-import Preloader from './components/SplashScreen'; 
+import Loader from './components/Loader';
 import Cooking from './components/Cooking'; // <--- 1. IMPORT THIS
 import Resources from './components/Resources';
 import ParticlesBackground from './components/ParticlesBackground';
@@ -21,6 +21,15 @@ import CyberBackground from './components/CyberBackground'; // <--- ADDED CYBER 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentView, setCurrentView] = useState('home'); // <--- 2. ADD VIEW STATE
+
+  useEffect(() => {
+    // Hide splash screen after 2.5 seconds
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     // Native scroll on mobile is smoother and requires zero JS overhead
@@ -63,10 +72,18 @@ function App() {
   return (
     <div className="bg-transparent min-h-screen text-white selection:bg-neon-cyan selection:text-black overflow-x-hidden w-full">
       
-      {/* PRELOADER LOGIC */}
+      {/* SPLASH SCREEN */}
       <AnimatePresence mode='wait'>
         {isLoading && (
-          <Preloader onComplete={() => setIsLoading(false)} />
+          <motion.div
+            key="splash-screen"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="fixed inset-0 z-[99999] flex items-center justify-center bg-black"
+          >
+            <Loader />
+          </motion.div>
         )}
       </AnimatePresence>
 

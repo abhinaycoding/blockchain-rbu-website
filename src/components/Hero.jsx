@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Zap } from 'lucide-react';
 import MagneticWrapper from './MagneticWrapper';
 import CryptoCoin3D from './CryptoCoin3D';
+import Pattern from './Pattern';
 import logo from '../assets/logo-icon.png';
 import './HeroCoin.css'; 
 
@@ -32,10 +33,18 @@ const Hero = ({ onJoinClick }) => {
   return (
     <section className="relative min-h-screen flex items-center bg-transparent text-white overflow-hidden selection:bg-orange-500/30">
       
-      {/* Background Ambience — desktop only, mobile doesn't need these */}
-      <div className="hidden lg:block absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-orange-600/10 rounded-full blur-[120px] animate-pulse" />
-      <div className="hidden lg:block absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-blue-600/5 rounded-full blur-[100px]" />
-      <div className="hidden lg:block absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-20" />
+      {/* Geometric Pattern Background */}
+      <div className="absolute inset-0 w-full h-full z-0 opacity-5 pointer-events-none [&>*]:absolute [&>*]:inset-0 [&>*]:w-full [&>*]:h-full">
+        <Pattern />
+      </div>
+
+      {/* DESKTOP 3D CONTAINER */}
+      <div 
+        className="hidden lg:block absolute right-0 overflow-hidden pointer-events-none hero-3d" 
+        style={{ top: '12%', width: '52%', height: '78%', zIndex: 5 }}
+      >
+        <CryptoCoin3D />
+      </div>
 
       {/* MOBILE ONLY: Logo as background */}
       <div className="lg:hidden">
@@ -45,7 +54,7 @@ const Hero = ({ onJoinClick }) => {
       <div className="relative max-w-7xl mx-auto px-6 w-full flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 pt-20 lg:items-center">
         
         {/* LEFT SIDE: Content — always on top of the static bg on mobile */}
-        <div className="relative z-10 w-full lg:w-auto mt-4 lg:mt-0 order-1">
+        <div className="relative w-full lg:w-auto mt-4 lg:mt-0 order-1" style={{ zIndex: 10 }}>
           <motion.div 
             initial="hidden"
             animate="visible"
@@ -72,7 +81,7 @@ const Hero = ({ onJoinClick }) => {
 
             <motion.p 
               variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } }}
-              className="text-gray-400 text-lg md:text-xl font-light max-w-lg leading-relaxed mb-10">
+              className="text-white/90 text-lg md:text-xl font-medium max-w-lg leading-relaxed mb-10">
               We are building the next generation of Blockchain innovators by empowering students through hands-on learning, real projects, and Web3 technologies.
             </motion.p>
 
@@ -94,10 +103,7 @@ const Hero = ({ onJoinClick }) => {
           </motion.div>
         </div>
 
-        {/* DESKTOP ONLY: Full 3D interactive model */}
-        <div className="hidden lg:flex lg:order-2 lg:w-full lg:h-[600px] items-center justify-center z-0">
-          <CryptoCoin3D />
-        </div>
+        {/* Removed inner 3D container to support absolute positioning */}
 
       </div>
     </section>

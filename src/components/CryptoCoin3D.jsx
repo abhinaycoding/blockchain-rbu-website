@@ -29,109 +29,91 @@ function StudioEnvironment() {
   return null;
 }
 
-function EthereumModel() {
+function IcyCrystalModel() {
   const modelRef = useRef(null);
 
   useFrame((state, delta) => {
     if (modelRef.current) {
-      modelRef.current.rotation.y += delta * 0.15;
-      const targetX = state.pointer.x * 0.5;
-      const targetY = state.pointer.y * 0.5;
+      // Auto-rotation combined with subtle mouse tracking
+      modelRef.current.rotation.y += delta * 0.1;
+      const targetX = state.pointer.x * 0.25;
+      const targetY = state.pointer.y * 0.25;
       modelRef.current.rotation.x = THREE.MathUtils.damp(modelRef.current.rotation.x, targetY, 3, delta);
       modelRef.current.rotation.z = THREE.MathUtils.damp(modelRef.current.rotation.z, -targetX, 3, delta);
     }
   });
 
   return (
-    <group ref={modelRef} scale={1.17}>
-      <Float speed={1.0} rotationIntensity={0.2} floatIntensity={0.6}>
+    <group ref={modelRef} scale={0.9} position={[0, 0, 0]}>
+      <Float speed={1.2} rotationIntensity={0.3} floatIntensity={0.5}>
         <group>
-          {/* Top Crystal — MeshPhysicalMaterial: no FBO, full reflections */}
-          <mesh position={[0, 0.58, 0]}>
-            <coneGeometry args={[0.68, 1.2, 4]} />
+          {/* Main Ethereum Crystal */}
+          <mesh scale={[1, 1.5, 1]}>
+            <octahedronGeometry args={[0.9, 0]} />
             <meshPhysicalMaterial
-              color="#c5d1ff"
+              color="#ffffff"
               metalness={0.1}
               roughness={0.0}
-              transmission={0.92}
-              thickness={1.2}
-              ior={1.5}
+              transmission={0.95}
+              thickness={1.5}
+              ior={1.4}
               clearcoat={1}
               clearcoatRoughness={0}
               envMapIntensity={2.5}
               transparent
-              opacity={0.85}
+              opacity={0.8}
+              flatShading={true}
             />
           </mesh>
-
-          {/* Bottom Crystal */}
-          <mesh position={[0, -0.58, 0]} rotation-z={Math.PI}>
-            <coneGeometry args={[0.68, 1.2, 4]} />
-            <meshPhysicalMaterial
-              color="#a4b4ff"
-              metalness={0.1}
-              roughness={0.0}
-              transmission={0.92}
-              thickness={1.2}
-              ior={1.5}
-              clearcoat={1}
-              clearcoatRoughness={0}
-              envMapIntensity={2.5}
-              transparent
-              opacity={0.85}
-            />
+          
+          {/* Inner Glowing Cyan Core */}
+          <mesh scale={[0.5, 0.75, 0.5]}>
+            <octahedronGeometry args={[0.9, 0]} />
+            <meshStandardMaterial color="#ffffff" emissive="#06b6d4" emissiveIntensity={4} toneMapped={false} />
           </mesh>
 
-          {/* Inner Core Top — emissive glow */}
-          <mesh position={[0, 0.17, 0]} scale={[0.9, 0.64, 0.9]}>
-            <coneGeometry args={[0.5, 0.74, 4]} />
-            <meshStandardMaterial
-              color="#ffffff"
-              emissive="#4f46e5"
-              emissiveIntensity={3}
-              toneMapped={false}
-            />
+          {/* Geometric Wireframe Cage */}
+          <mesh scale={[1.05, 1.57, 1.05]}>
+            <octahedronGeometry args={[0.9, 0]} />
+            <meshBasicMaterial color="#ffffff" wireframe transparent opacity={0.15} />
           </mesh>
 
-          {/* Inner Core Bottom */}
-          <mesh position={[0, -0.17, 0]} rotation-z={Math.PI} scale={[0.9, 0.64, 0.9]}>
-            <coneGeometry args={[0.5, 0.74, 4]} />
-            <meshStandardMaterial
-              color="#ffffff"
-              emissive="#4338ca"
-              emissiveIntensity={3}
-              toneMapped={false}
-            />
-          </mesh>
-
-          {/* Outer Ring */}
-          <mesh rotation={[Math.PI / 2, 0, 0]}>
-            <torusGeometry args={[0.93, 0.018, 16, 100]} />
-            <meshStandardMaterial color="#ffffff" metalness={1} roughness={0.05} envMapIntensity={3} />
-          </mesh>
-
-          {/* Wireframe Outline */}
-          <mesh scale={1.03}>
-            <octahedronGeometry args={[1.05, 0]} />
-            <meshBasicMaterial color="#c7d2fe" wireframe transparent opacity={0.08} />
-          </mesh>
+          {/* Multiple Fine Orbital Rings */}
+          <group rotation={[0.4, 0.2, 0]}>
+            <mesh rotation={[Math.PI / 2, 0, 0]}>
+              <torusGeometry args={[1.5, 0.003, 64, 100]} />
+              <meshBasicMaterial color="#ffffff" transparent opacity={0.5} />
+            </mesh>
+            <mesh rotation={[Math.PI / 2.5, 0.5, 0]}>
+              <torusGeometry args={[1.7, 0.002, 64, 100]} />
+              <meshBasicMaterial color="#ffffff" transparent opacity={0.3} />
+            </mesh>
+            <mesh rotation={[Math.PI / 1.5, -0.5, 0]}>
+              <torusGeometry args={[2.0, 0.002, 64, 100]} />
+              <meshBasicMaterial color="#ffffff" transparent opacity={0.15} />
+            </mesh>
+          </group>
         </group>
       </Float>
 
-      <Sparkles count={25} scale={4} size={2} color="#a4b4ff" opacity={0.4} speed={0.3} />
-      <ContactShadows position={[0, -1.8, 0]} opacity={0.6} scale={6} blur={2} far={3} color="#000000" frames={1} resolution={256} />
+      {/* Dual Particle System: White + Orange */}
+      <Sparkles count={50} scale={6} size={1.2} color="#ffffff" opacity={0.5} speed={0.4} />
+      <Sparkles count={20} scale={5} size={2.5} color="#f97316" opacity={0.8} speed={0.2} />
+      
+      <ContactShadows position={[0, -2.5, 0]} opacity={0.5} scale={8} blur={2.5} far={4} color="#000000" frames={1} resolution={256} />
     </group>
   );
 }
 
 const CryptoCoin3D = () => {
   return (
-    <div className="w-full h-full max-w-[460px] max-h-[460px]">
+    // Removed max-w/max-h constraints to allow filling the absolute Hero wrapper
+    <div className="w-full h-full">
       <Canvas
-        camera={{ position: [0, 0, 5.2], fov: 28 }}
+        camera={{ position: [0, 0, 6], fov: 35 }}
         dpr={[1, 1.5]}
         gl={{
-          antialias: false, // Disable MSAA — costly on weak GPUs
+          antialias: false, 
           toneMapping: THREE.ACESFilmicToneMapping,
           toneMappingExposure: 1.2,
           powerPreference: 'high-performance',
@@ -141,8 +123,8 @@ const CryptoCoin3D = () => {
         <StudioEnvironment />
         <ambientLight intensity={0.8} />
         <directionalLight position={[3.5, 4, 3.2]} intensity={1.5} color="#ffffff" />
-        <pointLight position={[-3, -2.5, 2]} intensity={2} color="#5b6dff" />
-        <EthereumModel />
+        <pointLight position={[-3, -2.5, 2]} intensity={2} color="#06b6d4" />
+        <IcyCrystalModel />
       </Canvas>
     </div>
   );

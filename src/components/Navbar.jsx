@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, ExternalLink, Menu, X, Home, Info, Calendar } from 'lucide-react';
-import HackerText from './HackerText';
+import { Menu, X, Home, Info, Calendar } from 'lucide-react';
 import logo from '../assets/logo.jpg';
 
 const Navbar = () => {
@@ -35,7 +34,7 @@ const Navbar = () => {
 
   return (
     // Fixed positioning wrapper to keep it at the top
-    <div className="fixed top-0 left-0 w-full z-[100] flex justify-center pt-6 pointer-events-none px-4">
+    <div className="fixed top-0 left-0 w-full flex justify-center pt-6 pointer-events-none px-4" style={{ zIndex: 20 }}>
       
       {/* 
         The Dynamic Island Container 
@@ -71,9 +70,9 @@ const Navbar = () => {
                   initial={{ opacity: 0, width: 0 }}
                   animate={{ opacity: 1, width: "auto" }}
                   exit={{ opacity: 0, width: 0 }}
-                  className="font-display font-bold text-lg md:text-xl tracking-tighter leading-none whitespace-nowrap overflow-hidden hidden md:block"
+                  className="font-sans font-extrabold text-lg md:text-xl tracking-tight leading-none whitespace-nowrap overflow-hidden hidden md:block uppercase"
                 >
-                  BLOCK<span className="text-neon-cyan group-hover:text-neon-purple transition-colors"> CHAIN</span>
+                  BLOCKCHAIN <span className="text-orange-500">RBU</span>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -89,9 +88,9 @@ const Navbar = () => {
                 className="hidden md:flex gap-8 font-mono text-sm text-gray-400 absolute left-1/2 -translate-x-1/2"
               >
                 {menuItems.map((item) => (
-                  <a key={item.name} href={`#${item.id}`} className="group flex items-center hover:text-white transition-colors">
-                    <span className="text-neon-purple mr-2 opacity-0 group-hover:opacity-100 transition-opacity"><item.icon size={14} /></span>
-                    <HackerText text={item.name} />
+                  <a key={item.name} href={`#${item.id}`} className="group flex items-center text-gray-300 hover:text-cyan-400 transition-colors font-semibold tracking-wider text-xs">
+                    <span className="text-orange-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity"><item.icon size={14} /></span>
+                    {item.name}
                   </a>
                 ))}
               </motion.div>
@@ -101,31 +100,11 @@ const Navbar = () => {
           {/* RIGHT SIDE (Join Button or Hamburger) */}
           <div className="flex items-center gap-4 shrink-0">
             
-            {/* Join Button - Visible when Expanded on Desktop OR always on Mobile if room */}
-            <AnimatePresence>
-              {(isExpanded || !isScrolled) && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  className="hidden sm:block"
-                >
-                  <a 
-                    href="https://www.instagram.com/blockchain_rbu"
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="group border border-neon-purple/50 px-6 py-2 rounded-full font-mono text-xs uppercase flex items-center gap-2 text-neon-purple hover:bg-neon-purple hover:text-white transition-all hover:scale-105 active:scale-95"
-                  >
-                    <MessageCircle size={14} className="group-hover:animate-bounce" />
-                    <span>Join Us</span>
-                  </a>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {/* Join Button - Removed to reduce duplicate CTA clutter */}
 
             {/* Mobile Menu Toggle */}
             <button 
-              className="md:hidden text-neon-cyan p-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors"
+              className="md:hidden text-cyan-400 p-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               <AnimatePresence mode="wait">
@@ -163,24 +142,14 @@ const Navbar = () => {
                     transition={{ delay: index * 0.1 }}
                     className="flex items-center gap-4 text-gray-400 py-2 border-b border-white/5"
                   >
-                    <div className="w-8 h-8 rounded-full bg-neon-purple/10 flex items-center justify-center text-neon-purple">
+                    <div className="w-8 h-8 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-500">
                       <item.icon size={16} />
                     </div>
                     {item.name}
                   </motion.a>
                 ))}
                 
-                <motion.a 
-                  href="https://www.instagram.com/blockchain_rbu"
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  initial={{ x: -20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.4 }}
-                  className="mt-4 w-full bg-neon-purple text-white py-3 rounded-xl flex justify-center items-center gap-2 font-bold uppercase text-sm"
-                >
-                  <MessageCircle size={18} /> Join on Instagram
-                </motion.a>
+                {/* Mobile Join Button Removed */}
               </div>
             </motion.div>
           )}

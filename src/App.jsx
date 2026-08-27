@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import Lenis from 'lenis';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -20,7 +21,7 @@ import CyberBackground from './components/CyberBackground'; // <--- ADDED CYBER 
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const [currentView, setCurrentView] = useState('home'); // <--- 2. ADD VIEW STATE
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Hide splash screen after 2.5 seconds
@@ -58,17 +59,7 @@ function App() {
     };
   }, []);
 
-  // 3. IF VIEW IS 'COOKING', RENDER ONLY THAT PAGE
-  if (currentView === 'cooking') {
-    return (
-      <>
-        <NoiseOverlay />
-        <Cooking onBack={() => setCurrentView('home')} />
-      </>
-    );
-  }
-
-  // 4. OTHERWISE RENDER THE MAIN WEBSITE
+  // Main Website Structure
   return (
     <div className="bg-transparent min-h-screen text-white selection:bg-neon-cyan selection:text-black overflow-x-hidden w-full">
       
@@ -94,18 +85,28 @@ function App() {
       {/* MAIN SECTIONS */}
       <Navbar />
       
-      <main className="relative z-10">
-        
-        {/* 5. PASS THE CLICK HANDLER TO HERO */}
-        <Hero onJoinClick={() => setCurrentView('cooking')} />
-        
-        <TechTicker />
-        <About />
-        <Resources />
-        <Perks />
-        <Timeline />
-        <Events />
-        <FAQ />
+      <main className="relative z-10 min-h-screen">
+        <Routes>
+          <Route path="/" element={
+            <>
+              <Hero onJoinClick={() => navigate('/cooking')} />
+              <TechTicker />
+              <About />
+              <Perks />
+              <Timeline />
+              <Events />
+              <FAQ />
+            </>
+          } />
+          
+          <Route path="/resources" element={<Resources />} />
+          
+          <Route path="/cooking" element={
+            <div className="absolute inset-0 z-50 bg-black">
+              <Cooking onBack={() => navigate('/')} />
+            </div>
+          } />
+        </Routes>
       </main>
 
       <Footer />

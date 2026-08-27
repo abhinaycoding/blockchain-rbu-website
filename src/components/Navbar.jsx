@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Home, Info, Calendar } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Menu, X, Home, Info, Calendar, BookOpen } from 'lucide-react';
 import logo from '../assets/logo.jpg';
 
 const Navbar = () => {
@@ -24,9 +25,10 @@ const Navbar = () => {
 
   // Menu items with icons for the expanded state
   const menuItems = [
-    { name: 'HOME', id: 'home', icon: Home },
-    { name: 'ABOUT', id: 'about', icon: Info },
-    { name: 'EVENTS', id: 'events', icon: Calendar },
+    { name: 'HOME', path: '/#', icon: Home },
+    { name: 'ABOUT', path: '/#about', icon: Info },
+    { name: 'EVENTS', path: '/#events', icon: Calendar },
+    { name: 'RESOURCES', path: '/resources', icon: BookOpen },
   ];
 
   // Determine if the island should be expanded (not scrolled, OR hovered while scrolled)
@@ -58,7 +60,7 @@ const Navbar = () => {
         <div className="w-full h-16 md:h-20 px-4 md:px-8 flex justify-between items-center shrink-0">
           
           {/* LOGO (Always Visible) */}
-          <a href="#" className="flex items-center gap-3 group shrink-0" onClick={() => setIsMobileMenuOpen(false)}>
+          <a href="/" className="flex items-center gap-3 group shrink-0" onClick={() => setIsMobileMenuOpen(false)}>
             <div className="relative h-10 w-10 md:h-12 md:w-12 rounded-full overflow-hidden border border-white/10 group-hover:border-neon-cyan transition-colors">
                <img src={logo} alt="BRC Logo" className="h-full w-full object-cover" />
             </div>
@@ -87,12 +89,20 @@ const Navbar = () => {
                 exit={{ opacity: 0, y: -10 }}
                 className="hidden md:flex gap-8 font-mono text-sm text-gray-400 absolute left-1/2 -translate-x-1/2"
               >
-                {menuItems.map((item) => (
-                  <a key={item.name} href={`#${item.id}`} className="group flex items-center text-gray-300 hover:text-cyan-400 transition-colors font-semibold tracking-wider text-xs">
-                    <span className="text-orange-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity"><item.icon size={14} /></span>
-                    {item.name}
-                  </a>
-                ))}
+                {menuItems.map((item) => {
+                  const isHash = item.path.includes('#');
+                  return isHash ? (
+                    <a key={item.name} href={item.path} className="group flex items-center text-gray-300 hover:text-cyan-400 transition-colors font-semibold tracking-wider text-xs">
+                      <span className="text-orange-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity"><item.icon size={14} /></span>
+                      {item.name}
+                    </a>
+                  ) : (
+                    <Link key={item.name} to={item.path} className="group flex items-center text-gray-300 hover:text-cyan-400 transition-colors font-semibold tracking-wider text-xs">
+                      <span className="text-orange-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity"><item.icon size={14} /></span>
+                      {item.name}
+                    </Link>
+                  );
+                })}
               </motion.div>
             )}
           </AnimatePresence>
@@ -132,22 +142,35 @@ const Navbar = () => {
               className="w-full md:hidden"
             >
               <div className="flex flex-col p-6 pt-0 gap-4 font-mono text-lg border-t border-white/5 mt-2">
-                {menuItems.map((item, index) => (
-                  <motion.a 
-                    key={item.name} 
-                    href={`#${item.id}`}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    initial={{ x: -20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="flex items-center gap-4 text-gray-400 py-2 border-b border-white/5"
-                  >
-                    <div className="w-8 h-8 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-500">
-                      <item.icon size={16} />
-                    </div>
-                    {item.name}
-                  </motion.a>
-                ))}
+                {menuItems.map((item, index) => {
+                  const isHash = item.path.includes('#');
+                  const commonProps = {
+                    key: item.name,
+                    onClick: () => setIsMobileMenuOpen(false),
+                    initial: { x: -20, opacity: 0 },
+                    animate: { x: 0, opacity: 1 },
+                    transition: { delay: index * 0.1 },
+                    className: "flex items-center gap-4 text-gray-400 py-2 border-b border-white/5"
+                  };
+                  
+                  return isHash ? (
+                    <motion.a href={item.path} {...commonProps}>
+                      <div className="w-8 h-8 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-500">
+                        <item.icon size={16} />
+                      </div>
+                      {item.name}
+                    </motion.a>
+                  ) : (
+                    <motion.div {...commonProps}>
+                      <Link to={item.path} className="flex items-center gap-4 w-full h-full">
+                        <div className="w-8 h-8 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-500">
+                          <item.icon size={16} />
+                        </div>
+                        {item.name}
+                      </Link>
+                    </motion.div>
+                  );
+                })}
                 
                 {/* Mobile Join Button Removed */}
               </div>

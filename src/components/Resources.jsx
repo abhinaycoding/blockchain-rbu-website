@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen, Terminal, Code, Database, ExternalLink } from 'lucide-react';
+import { BookOpen, Terminal, Code, Database, ExternalLink, ShieldAlert, Coins, Image, Users } from 'lucide-react';
 import HackerText from './HackerText';
 
 const resourceCategories = [
@@ -51,12 +51,60 @@ const resourceCategories = [
       { name: "Foundry", url: "https://book.getfoundry.sh/" },
       { name: "Alchemy (Nodes/APIs)", url: "https://www.alchemy.com/" }
     ]
+  },
+  {
+    title: "Security & Auditing",
+    icon: ShieldAlert,
+    color: "text-red-500",
+    border: "border-red-500/50 hover:border-red-500",
+    bgHover: "hover:bg-red-500/10",
+    links: [
+      { name: "Smart Contract Best Practices", url: "https://consensys.github.io/smart-contract-best-practices/" },
+      { name: "Ethernaut by OpenZeppelin", url: "https://ethernaut.openzeppelin.com/" },
+      { name: "Slither (Static Analysis)", url: "https://github.com/crytic/slither" }
+    ]
+  },
+  {
+    title: "DeFi & Tokenomics",
+    icon: Coins,
+    color: "text-yellow-400",
+    border: "border-yellow-400/50 hover:border-yellow-400",
+    bgHover: "hover:bg-yellow-400/10",
+    links: [
+      { name: "DeFi Developer Roadmap", url: "https://github.com/OffcierCia/DeFi-Developer-Road-Map" },
+      { name: "Uniswap V3 Book", url: "https://uniswapv3book.com/" },
+      { name: "Tokenomics Frameworks", url: "https://tokenomicsdao.com/" }
+    ]
+  },
+  {
+    title: "NFTs & IPFS",
+    icon: Image,
+    color: "text-pink-500",
+    border: "border-pink-500/50 hover:border-pink-500",
+    bgHover: "hover:bg-pink-500/10",
+    links: [
+      { name: "IPFS Documentation", url: "https://docs.ipfs.tech/" },
+      { name: "ERC721 Standard", url: "https://eips.ethereum.org/EIPS/eip-721" },
+      { name: "Pinata API Docs", url: "https://docs.pinata.cloud/" }
+    ]
+  },
+  {
+    title: "Community & Jobs",
+    icon: Users,
+    color: "text-green-400",
+    border: "border-green-400/50 hover:border-green-400",
+    bgHover: "hover:bg-green-400/10",
+    links: [
+      { name: "CryptoJobsList", url: "https://cryptojobslist.com/" },
+      { name: "Web3 Career", url: "https://web3.career/" },
+      { name: "Buildspace", url: "https://buildspace.so/" }
+    ]
   }
 ];
 
 const Resources = () => {
   return (
-    <section id="resources" className="relative py-24 bg-black overflow-hidden relative z-10">
+    <section id="resources" className="relative py-24 pt-36 min-h-screen bg-black overflow-hidden relative z-10">
       
       {/* Background Ambience */}
       <div className="absolute top-0 right-[-10%] w-[500px] h-[500px] bg-neon-purple/5 rounded-full blur-[120px]" />
